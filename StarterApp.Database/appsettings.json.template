@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "DevelopmentConnection": "Host=localhost;Username=dev_user;Password=dev_password;Database=devdb"
+  }
+}

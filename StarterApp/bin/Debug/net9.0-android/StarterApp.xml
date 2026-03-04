@@ -1,0 +1,1391 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>StarterApp</name>
+    </assembly>
+    <members>
+        <member name="T:StarterApp.Converters.InvertedBoolConverter">
+            <summary>
+            Converts a boolean value to its inverse (true becomes false, false becomes true)
+            </summary>
+        </member>
+        <member name="T:StarterApp.Converters.StringToBoolConverter">
+            <summary>
+            Converts a string to a boolean value
+            Returns true if the string is not null, empty, or whitespace
+            Returns false if the string is null, empty, or whitespace
+            </summary>
+        </member>
+        <member name="T:StarterApp.ViewModels.AboutViewModel">
+            @brief View model for the About page that displays application information
+            @details Provides basic application information including name, version, and links to more information
+        </member>
+        <member name="P:StarterApp.ViewModels.AboutViewModel.Title">
+            @brief Gets the application title from AppInfo
+            @return The application name as a string
+        </member>
+        <member name="P:StarterApp.ViewModels.AboutViewModel.Version">
+            @brief Gets the application version from AppInfo
+            @return The application version string
+        </member>
+        <member name="P:StarterApp.ViewModels.AboutViewModel.MoreInfoUrl">
+            @brief Gets the URL for more information about the application
+            @return URL string pointing to MAUI documentation
+        </member>
+        <member name="P:StarterApp.ViewModels.AboutViewModel.Message">
+            @brief Gets a descriptive message about the application technology stack
+            @return Description of the app's technology stack
+        </member>
+        <member name="P:StarterApp.ViewModels.AboutViewModel.ShowMoreInfoCommand">
+            @brief Command to show more information about the application
+            @details Opens the MoreInfoUrl in the default browser
+        </member>
+        <member name="M:StarterApp.ViewModels.AboutViewModel.#ctor">
+            @brief Initializes a new instance of the AboutViewModel class
+            @details Sets up the ShowMoreInfoCommand with async relay command
+        </member>
+        <member name="M:StarterApp.ViewModels.AboutViewModel.ShowMoreInfo">
+            @brief Opens the more information URL in the default browser
+            @details Asynchronously launches the default browser with the MoreInfoUrl
+            @return A task representing the asynchronous operation
+        </member>
+        <member name="T:StarterApp.ViewModels.AppShellViewModel">
+            @brief View model for the application shell that manages navigation and authentication
+            @details Handles menu items, navigation commands, and authentication state changes
+            @extends BaseViewModel
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="F:StarterApp.ViewModels.AppShellViewModel._authService">
+            @brief Authentication service for managing user authentication
+        </member>
+        <member name="F:StarterApp.ViewModels.AppShellViewModel._navigationService">
+            @brief Navigation service for managing page navigation
+        </member>
+        <member name="P:StarterApp.ViewModels.AppShellViewModel.DynamicMenuBarItems">
+            @brief Collection of dynamic menu bar items
+            @details Observable collection that can be modified at runtime based on user permissions
+        </member>
+        <member name="M:StarterApp.ViewModels.AppShellViewModel.#ctor">
+            @brief Default constructor for design-time support
+            @details Sets the title to "StarterApp"
+        </member>
+        <member name="M:StarterApp.ViewModels.AppShellViewModel.#ctor(StarterApp.Services.IAuthenticationService,StarterApp.Services.INavigationService)">
+            @brief Initializes a new instance of the AppShellViewModel class
+            @param authService The authentication service instance
+            @param navigationService The navigation service instance
+            @details Sets up authentication state change event handler and initializes the title
+        </member>
+        <member name="M:StarterApp.ViewModels.AppShellViewModel.CanExecuteGuestAction">
+            @brief Determines if guest actions can be executed
+            @return True if the current user has the "Guest" role
+        </member>
+        <member name="M:StarterApp.ViewModels.AppShellViewModel.CanExecuteUserAction">
+            @brief Determines if user actions can be executed
+            @return True if the current user has the "OrdinaryUser" role
+        </member>
+        <member name="M:StarterApp.ViewModels.AppShellViewModel.CanExecuteAdminAction">
+            @brief Determines if admin actions can be executed
+            @return True if the current user has the "Admin" role
+        </member>
+        <member name="M:StarterApp.ViewModels.AppShellViewModel.CanExecuteAuthenticatedAction">
+            @brief Determines if authenticated actions can be executed
+            @return True if the user is authenticated
+        </member>
+        <member name="M:StarterApp.ViewModels.AppShellViewModel.OnAuthenticationStateChanged(System.Object,System.Boolean)">
+            @brief Handles authentication state changes
+            @param sender The event sender
+            @param isAuthenticated Whether the user is authenticated
+            @details Updates command can-execute states and logs authentication information
+        </member>
+        <member name="M:StarterApp.ViewModels.AppShellViewModel.NavigateToProfileAsync">
+            @brief Navigates to the current user's profile page
+            @return A task representing the asynchronous navigation operation
+        </member>
+        <member name="M:StarterApp.ViewModels.AppShellViewModel.NavigateToSettingsAsync">
+            @brief Navigates to the current user's settings page
+            @return A task representing the asynchronous navigation operation
+        </member>
+        <member name="M:StarterApp.ViewModels.AppShellViewModel.LogoutAsync">
+            @brief Logs out the current user and navigates to login page
+            @details Relay command that can only be executed by authenticated users
+            @return A task representing the asynchronous logout operation
+        </member>
+        <member name="F:StarterApp.ViewModels.AppShellViewModel.navigateToProfileCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.AppShellViewModel.NavigateToProfileCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.AppShellViewModel.NavigateToProfileCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.AppShellViewModel.NavigateToProfileAsync"/>.</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.AppShellViewModel.navigateToSettingsCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.AppShellViewModel.NavigateToSettingsCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.AppShellViewModel.NavigateToSettingsCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.AppShellViewModel.NavigateToSettingsAsync"/>.</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.AppShellViewModel.logoutCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.AppShellViewModel.LogoutCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.AppShellViewModel.LogoutCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.AppShellViewModel.LogoutAsync"/>.</summary>
+        </member>
+        <member name="T:StarterApp.ViewModels.BaseViewModel">
+            @brief Base view model class that provides common properties and functionality
+            @details Extends ObservableObject to provide property change notifications and includes
+            common properties like IsBusy, Title, and error handling
+            @extends ObservableObject
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="F:StarterApp.ViewModels.BaseViewModel.isBusy">
+            @brief Indicates whether the view model is currently performing a busy operation
+            @details Observable property that can be bound to UI elements to show loading states
+        </member>
+        <member name="F:StarterApp.ViewModels.BaseViewModel.title">
+            @brief The title of the current page or view
+            @details Observable property that can be bound to page titles or headers
+        </member>
+        <member name="F:StarterApp.ViewModels.BaseViewModel.errorMessage">
+            @brief The current error message, if any
+            @details Observable property that stores error messages for display to the user
+        </member>
+        <member name="F:StarterApp.ViewModels.BaseViewModel.hasError">
+            @brief Indicates whether there is currently an error
+            @details Observable property that indicates if an error state exists
+        </member>
+        <member name="M:StarterApp.ViewModels.BaseViewModel.SetError(System.String)">
+            @brief Sets an error message and updates the error state
+            @param message The error message to set
+            @details Updates both ErrorMessage and HasError properties
+        </member>
+        <member name="M:StarterApp.ViewModels.BaseViewModel.ClearError">
+            @brief Clears the current error state
+            @details Resets both ErrorMessage and HasError properties
+        </member>
+        <member name="M:StarterApp.ViewModels.BaseViewModel.ClearErrorCommand">
+            @brief Command to clear the current error state
+            @details Relay command that calls ClearError method
+        </member>
+        <member name="P:StarterApp.ViewModels.BaseViewModel.IsBusy">
+            <inheritdoc cref="F:StarterApp.ViewModels.BaseViewModel.isBusy"/>
+        </member>
+        <member name="P:StarterApp.ViewModels.BaseViewModel.Title">
+            <inheritdoc cref="F:StarterApp.ViewModels.BaseViewModel.title"/>
+        </member>
+        <member name="P:StarterApp.ViewModels.BaseViewModel.ErrorMessage">
+            <inheritdoc cref="F:StarterApp.ViewModels.BaseViewModel.errorMessage"/>
+        </member>
+        <member name="P:StarterApp.ViewModels.BaseViewModel.HasError">
+            <inheritdoc cref="F:StarterApp.ViewModels.BaseViewModel.hasError"/>
+        </member>
+        <member name="F:StarterApp.ViewModels.BaseViewModel.clearErrorCommandCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.BaseViewModel.ClearErrorCommandCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.BaseViewModel.ClearErrorCommandCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.BaseViewModel.ClearErrorCommand"/>.</summary>
+        </member>
+        <member name="T:StarterApp.ViewModels.LoginViewModel">
+            @brief View model for the login page that handles user authentication
+            @details Manages login form data, validation, and authentication process
+            @extends BaseViewModel
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="F:StarterApp.ViewModels.LoginViewModel._authService">
+            @brief Authentication service for managing user login
+        </member>
+        <member name="F:StarterApp.ViewModels.LoginViewModel._navigationService">
+            @brief Navigation service for managing page navigation
+        </member>
+        <member name="F:StarterApp.ViewModels.LoginViewModel.email">
+            @brief The user's email address
+            @details Observable property bound to the email input field
+        </member>
+        <member name="F:StarterApp.ViewModels.LoginViewModel.password">
+            @brief The user's password
+            @details Observable property bound to the password input field
+        </member>
+        <member name="F:StarterApp.ViewModels.LoginViewModel.rememberMe">
+            @brief Whether to remember the user's login credentials
+            @details Observable property bound to the remember me checkbox
+        </member>
+        <member name="F:StarterApp.ViewModels.LoginViewModel._isBusy">
+            @brief Indicates whether a login operation is in progress
+            @details Observable property that notifies the LoginCommand when changed
+        </member>
+        <member name="M:StarterApp.ViewModels.LoginViewModel.#ctor">
+            @brief Default constructor for design-time support
+            @details Sets the title to "Login"
+        </member>
+        <member name="M:StarterApp.ViewModels.LoginViewModel.#ctor(StarterApp.Services.IAuthenticationService,StarterApp.Services.INavigationService)">
+            @brief Initializes a new instance of the LoginViewModel class
+            @param authService The authentication service instance
+            @param navigationService The navigation service instance
+            @details Sets up the required services and initializes the title
+        </member>
+        <member name="M:StarterApp.ViewModels.LoginViewModel.LoginAsync">
+            @brief Performs user login authentication
+            @details Relay command that validates input and attempts to authenticate the user
+            @return A task representing the asynchronous login operation
+        </member>
+        <member name="M:StarterApp.ViewModels.LoginViewModel.NavigateToRegisterAsync">
+            @brief Navigates to the registration page
+            @details Relay command that navigates to the user registration page
+            @return A task representing the asynchronous navigation operation
+        </member>
+        <member name="M:StarterApp.ViewModels.LoginViewModel.ForgotPasswordAsync">
+            @brief Handles forgot password functionality
+            @details Relay command that displays a placeholder message for forgot password
+            @return A task representing the asynchronous operation
+            @todo Implement actual forgot password functionality
+        </member>
+        <member name="P:StarterApp.ViewModels.LoginViewModel.Email">
+            <inheritdoc cref="F:StarterApp.ViewModels.LoginViewModel.email"/>
+        </member>
+        <member name="P:StarterApp.ViewModels.LoginViewModel.Password">
+            <inheritdoc cref="F:StarterApp.ViewModels.LoginViewModel.password"/>
+        </member>
+        <member name="P:StarterApp.ViewModels.LoginViewModel.RememberMe">
+            <inheritdoc cref="F:StarterApp.ViewModels.LoginViewModel.rememberMe"/>
+        </member>
+        <member name="P:StarterApp.ViewModels.LoginViewModel.IsBusy">
+            <inheritdoc cref="F:StarterApp.ViewModels.LoginViewModel._isBusy"/>
+        </member>
+        <member name="F:StarterApp.ViewModels.LoginViewModel.loginCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.LoginViewModel.LoginCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.LoginViewModel.LoginCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.LoginViewModel.LoginAsync"/>.</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.LoginViewModel.navigateToRegisterCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.LoginViewModel.NavigateToRegisterCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.LoginViewModel.NavigateToRegisterCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.LoginViewModel.NavigateToRegisterAsync"/>.</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.LoginViewModel.forgotPasswordCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.LoginViewModel.ForgotPasswordCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.LoginViewModel.ForgotPasswordCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.LoginViewModel.ForgotPasswordAsync"/>.</summary>
+        </member>
+        <member name="T:StarterApp.ViewModels.MainViewModel">
+            @brief View model for the main dashboard page
+            @details Manages the main dashboard display, user information, and navigation to other sections
+            @extends BaseViewModel
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="F:StarterApp.ViewModels.MainViewModel._authService">
+            @brief Authentication service for managing user authentication
+        </member>
+        <member name="F:StarterApp.ViewModels.MainViewModel._navigationService">
+            @brief Navigation service for managing page navigation
+        </member>
+        <member name="F:StarterApp.ViewModels.MainViewModel.currentUser">
+            @brief The currently authenticated user
+            @details Observable property containing the current user's information
+        </member>
+        <member name="F:StarterApp.ViewModels.MainViewModel.welcomeMessage">
+            @brief Welcome message displayed to the user
+            @details Observable property showing a personalized welcome message
+        </member>
+        <member name="F:StarterApp.ViewModels.MainViewModel.isAdmin">
+            @brief Indicates whether the current user has admin privileges
+            @details Observable property used to control visibility of admin features
+        </member>
+        <member name="M:StarterApp.ViewModels.MainViewModel.#ctor">
+            @brief Default constructor for design-time support
+            @details Sets the title to "Dashboard"
+        </member>
+        <member name="M:StarterApp.ViewModels.MainViewModel.#ctor(StarterApp.Services.IAuthenticationService,StarterApp.Services.INavigationService)">
+            @brief Initializes a new instance of the MainViewModel class
+            @param authService The authentication service instance
+            @param navigationService The navigation service instance
+            @details Sets up the required services, initializes the title, and loads user data
+        </member>
+        <member name="M:StarterApp.ViewModels.MainViewModel.LoadUserData">
+            @brief Loads the current user's data and sets up the dashboard
+            @details Retrieves current user information and determines admin status
+        </member>
+        <member name="M:StarterApp.ViewModels.MainViewModel.LogoutAsync">
+            @brief Logs out the current user
+            @details Relay command that confirms logout and performs the logout operation
+            @return A task representing the asynchronous logout operation
+        </member>
+        <member name="M:StarterApp.ViewModels.MainViewModel.NavigateToProfileAsync">
+            @brief Navigates to the user profile page
+            @details Relay command that navigates to the profile management page
+            @return A task representing the asynchronous navigation operation
+        </member>
+        <member name="M:StarterApp.ViewModels.MainViewModel.NavigateToSettingsAsync">
+            @brief Navigates to the settings page
+            @details Relay command that navigates to the application settings page
+            @return A task representing the asynchronous navigation operation
+        </member>
+        <member name="M:StarterApp.ViewModels.MainViewModel.NavigateToUserListAsync">
+            @brief Navigates to the user list page
+            @details Relay command that navigates to the user management page, admin only
+            @return A task representing the asynchronous navigation operation
+        </member>
+        <member name="M:StarterApp.ViewModels.MainViewModel.RefreshDataAsync">
+            @brief Refreshes the dashboard data
+            @details Relay command that reloads user data and simulates a refresh operation
+            @return A task representing the asynchronous refresh operation
+        </member>
+        <member name="P:StarterApp.ViewModels.MainViewModel.CurrentUser">
+            <inheritdoc cref="F:StarterApp.ViewModels.MainViewModel.currentUser"/>
+        </member>
+        <member name="P:StarterApp.ViewModels.MainViewModel.WelcomeMessage">
+            <inheritdoc cref="F:StarterApp.ViewModels.MainViewModel.welcomeMessage"/>
+        </member>
+        <member name="P:StarterApp.ViewModels.MainViewModel.IsAdmin">
+            <inheritdoc cref="F:StarterApp.ViewModels.MainViewModel.isAdmin"/>
+        </member>
+        <member name="F:StarterApp.ViewModels.MainViewModel.logoutCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.MainViewModel.LogoutCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.MainViewModel.LogoutCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.MainViewModel.LogoutAsync"/>.</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.MainViewModel.navigateToProfileCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.MainViewModel.NavigateToProfileCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.MainViewModel.NavigateToProfileCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.MainViewModel.NavigateToProfileAsync"/>.</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.MainViewModel.navigateToSettingsCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.MainViewModel.NavigateToSettingsCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.MainViewModel.NavigateToSettingsCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.MainViewModel.NavigateToSettingsAsync"/>.</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.MainViewModel.navigateToUserListCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.MainViewModel.NavigateToUserListCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.MainViewModel.NavigateToUserListCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.MainViewModel.NavigateToUserListAsync"/>.</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.MainViewModel.refreshDataCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.MainViewModel.RefreshDataCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.MainViewModel.RefreshDataCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.MainViewModel.RefreshDataAsync"/>.</summary>
+        </member>
+        <member name="T:StarterApp.ViewModels.ProfileViewModel">
+            @brief View model for the user profile page
+            @details Manages user profile display and password change functionality
+            @extends BaseViewModel
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="F:StarterApp.ViewModels.ProfileViewModel._authService">
+            @brief Authentication service for managing user authentication
+        </member>
+        <member name="F:StarterApp.ViewModels.ProfileViewModel._navigationService">
+            @brief Navigation service for managing page navigation
+        </member>
+        <member name="F:StarterApp.ViewModels.ProfileViewModel.currentUser">
+            @brief The current user's profile information
+            @details Observable property containing the current user's data
+        </member>
+        <member name="F:StarterApp.ViewModels.ProfileViewModel.currentPassword">
+            @brief The user's current password for verification
+            @details Observable property bound to the current password input field
+        </member>
+        <member name="F:StarterApp.ViewModels.ProfileViewModel.newPassword">
+            @brief The user's new password
+            @details Observable property bound to the new password input field
+        </member>
+        <member name="F:StarterApp.ViewModels.ProfileViewModel.confirmNewPassword">
+            @brief Confirmation of the user's new password
+            @details Observable property bound to the confirm new password input field
+        </member>
+        <member name="F:StarterApp.ViewModels.ProfileViewModel.isChangingPassword">
+            @brief Indicates whether the password change mode is active
+            @details Observable property that controls the visibility of password change fields
+        </member>
+        <member name="M:StarterApp.ViewModels.ProfileViewModel.#ctor(StarterApp.Services.IAuthenticationService,StarterApp.Services.INavigationService)">
+            @brief Initializes a new instance of the ProfileViewModel class
+            @param authService The authentication service instance
+            @param navigationService The navigation service instance
+            @details Sets up the required services, initializes the title, and loads user data
+        </member>
+        <member name="M:StarterApp.ViewModels.ProfileViewModel.LoadUserData">
+            @brief Loads the current user's profile data
+            @details Retrieves the current user's information from the authentication service
+        </member>
+        <member name="M:StarterApp.ViewModels.ProfileViewModel.ChangePasswordAsync">
+            @brief Changes the user's password
+            @details Relay command that validates and performs the password change operation
+            @return A task representing the asynchronous password change operation
+        </member>
+        <member name="M:StarterApp.ViewModels.ProfileViewModel.TogglePasswordChangeMode">
+            @brief Toggles the password change mode
+            @details Relay command that shows/hides password change fields and clears data when hiding
+        </member>
+        <member name="M:StarterApp.ViewModels.ProfileViewModel.NavigateBackAsync">
+            @brief Navigates back to the previous page
+            @details Relay command that performs backward navigation
+            @return A task representing the asynchronous navigation operation
+        </member>
+        <member name="M:StarterApp.ViewModels.ProfileViewModel.ValidatePasswordChange">
+            @brief Validates the password change form data
+            @return True if validation passes, false otherwise
+            @details Checks all password change requirements and sets appropriate error messages
+        </member>
+        <member name="M:StarterApp.ViewModels.ProfileViewModel.ClearPasswordFields">
+            @brief Clears all password input fields
+            @details Resets all password-related properties to empty strings
+        </member>
+        <member name="P:StarterApp.ViewModels.ProfileViewModel.CurrentUser">
+            <inheritdoc cref="F:StarterApp.ViewModels.ProfileViewModel.currentUser"/>
+        </member>
+        <member name="P:StarterApp.ViewModels.ProfileViewModel.CurrentPassword">
+            <inheritdoc cref="F:StarterApp.ViewModels.ProfileViewModel.currentPassword"/>
+        </member>
+        <member name="P:StarterApp.ViewModels.ProfileViewModel.NewPassword">
+            <inheritdoc cref="F:StarterApp.ViewModels.ProfileViewModel.newPassword"/>
+        </member>
+        <member name="P:StarterApp.ViewModels.ProfileViewModel.ConfirmNewPassword">
+            <inheritdoc cref="F:StarterApp.ViewModels.ProfileViewModel.confirmNewPassword"/>
+        </member>
+        <member name="P:StarterApp.ViewModels.ProfileViewModel.IsChangingPassword">
+            <inheritdoc cref="F:StarterApp.ViewModels.ProfileViewModel.isChangingPassword"/>
+        </member>
+        <member name="F:StarterApp.ViewModels.ProfileViewModel.changePasswordCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.ProfileViewModel.ChangePasswordCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.ProfileViewModel.ChangePasswordCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.ProfileViewModel.ChangePasswordAsync"/>.</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.ProfileViewModel.togglePasswordChangeModeCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.ProfileViewModel.TogglePasswordChangeModeCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.ProfileViewModel.TogglePasswordChangeModeCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.ProfileViewModel.TogglePasswordChangeMode"/>.</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.ProfileViewModel.navigateBackCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.ProfileViewModel.NavigateBackCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.ProfileViewModel.NavigateBackCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.ProfileViewModel.NavigateBackAsync"/>.</summary>
+        </member>
+        <member name="T:StarterApp.ViewModels.RegisterViewModel">
+            @brief View model for the user registration page
+            @details Manages user registration form data, validation, and registration process
+            @extends BaseViewModel
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="F:StarterApp.ViewModels.RegisterViewModel._authService">
+            @brief Authentication service for managing user registration
+        </member>
+        <member name="F:StarterApp.ViewModels.RegisterViewModel._navigationService">
+            @brief Navigation service for managing page navigation
+        </member>
+        <member name="F:StarterApp.ViewModels.RegisterViewModel.firstName">
+            @brief The user's first name
+            @details Observable property bound to the first name input field
+        </member>
+        <member name="F:StarterApp.ViewModels.RegisterViewModel.lastName">
+            @brief The user's last name
+            @details Observable property bound to the last name input field
+        </member>
+        <member name="F:StarterApp.ViewModels.RegisterViewModel.email">
+            @brief The user's email address
+            @details Observable property bound to the email input field
+        </member>
+        <member name="F:StarterApp.ViewModels.RegisterViewModel.password">
+            @brief The user's password
+            @details Observable property bound to the password input field
+        </member>
+        <member name="F:StarterApp.ViewModels.RegisterViewModel.confirmPassword">
+            @brief Confirmation of the user's password
+            @details Observable property bound to the confirm password input field
+        </member>
+        <member name="F:StarterApp.ViewModels.RegisterViewModel.acceptTerms">
+            @brief Whether the user accepts the terms and conditions
+            @details Observable property bound to the terms acceptance checkbox
+        </member>
+        <member name="M:StarterApp.ViewModels.RegisterViewModel.#ctor">
+            @brief Default constructor for design-time support
+            @details Sets the title to "Register"
+        </member>
+        <member name="M:StarterApp.ViewModels.RegisterViewModel.#ctor(StarterApp.Services.IAuthenticationService,StarterApp.Services.INavigationService)">
+            @brief Initializes a new instance of the RegisterViewModel class
+            @param authService The authentication service instance
+            @param navigationService The navigation service instance
+            @details Sets up the required services and initializes the title
+        </member>
+        <member name="M:StarterApp.ViewModels.RegisterViewModel.RegisterAsync">
+            @brief Registers a new user account
+            @details Relay command that validates form data and attempts to register the user
+            @return A task representing the asynchronous registration operation
+        </member>
+        <member name="M:StarterApp.ViewModels.RegisterViewModel.NavigateBackToLoginAsync">
+            @brief Navigates back to the login page
+            @details Relay command that returns to the login page
+            @return A task representing the asynchronous navigation operation
+        </member>
+        <member name="M:StarterApp.ViewModels.RegisterViewModel.ValidateForm">
+            @brief Validates the registration form data
+            @return True if validation passes, false otherwise
+            @details Checks all registration requirements and sets appropriate error messages
+        </member>
+        <member name="M:StarterApp.ViewModels.RegisterViewModel.IsValidEmail(System.String)">
+            @brief Validates an email address format
+            @param email The email address to validate
+            @return True if the email format is valid, false otherwise
+            @details Uses regex pattern matching to validate email format
+        </member>
+        <member name="P:StarterApp.ViewModels.RegisterViewModel.FirstName">
+            <inheritdoc cref="F:StarterApp.ViewModels.RegisterViewModel.firstName"/>
+        </member>
+        <member name="P:StarterApp.ViewModels.RegisterViewModel.LastName">
+            <inheritdoc cref="F:StarterApp.ViewModels.RegisterViewModel.lastName"/>
+        </member>
+        <member name="P:StarterApp.ViewModels.RegisterViewModel.Email">
+            <inheritdoc cref="F:StarterApp.ViewModels.RegisterViewModel.email"/>
+        </member>
+        <member name="P:StarterApp.ViewModels.RegisterViewModel.Password">
+            <inheritdoc cref="F:StarterApp.ViewModels.RegisterViewModel.password"/>
+        </member>
+        <member name="P:StarterApp.ViewModels.RegisterViewModel.ConfirmPassword">
+            <inheritdoc cref="F:StarterApp.ViewModels.RegisterViewModel.confirmPassword"/>
+        </member>
+        <member name="P:StarterApp.ViewModels.RegisterViewModel.AcceptTerms">
+            <inheritdoc cref="F:StarterApp.ViewModels.RegisterViewModel.acceptTerms"/>
+        </member>
+        <member name="F:StarterApp.ViewModels.RegisterViewModel.registerCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.RegisterViewModel.RegisterCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.RegisterViewModel.RegisterCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.RegisterViewModel.RegisterAsync"/>.</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.RegisterViewModel.navigateBackToLoginCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.RegisterViewModel.NavigateBackToLoginCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.RegisterViewModel.NavigateBackToLoginCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.RegisterViewModel.NavigateBackToLoginAsync"/>.</summary>
+        </member>
+        <member name="T:StarterApp.ViewModels.TempViewModel">
+            @brief Temporary view model for placeholder pages
+            @details Simple view model that displays basic application information
+            @note This is a placeholder implementation for temporary pages
+        </member>
+        <member name="P:StarterApp.ViewModels.TempViewModel.Title">
+            @brief Gets the application title from AppInfo
+            @return The application name as a string
+        </member>
+        <member name="P:StarterApp.ViewModels.TempViewModel.Version">
+            @brief Gets the application version from AppInfo
+            @return The application version string
+        </member>
+        <member name="P:StarterApp.ViewModels.TempViewModel.Message">
+            @brief Gets a placeholder message
+            @return A message indicating this is a placeholder page
+        </member>
+        <member name="M:StarterApp.ViewModels.TempViewModel.#ctor">
+            @brief Initializes a new instance of the TempViewModel class
+            @details Default constructor with no initialization logic
+        </member>
+        <member name="T:StarterApp.ViewModels.UserDetailViewModel">
+            <summary>
+            ViewModel for managing user details including creation, editing, and role management.
+            Handles both new user creation and existing user modification scenarios.
+            </summary>
+            <remarks>
+            This ViewModel provides comprehensive user management functionality including:
+            - User creation with password validation
+            - User profile editing
+            - Role assignment and removal
+            - User deletion (soft delete)
+            - Input validation and error handling
+            </remarks>
+            <inheritdoc/>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserDetailViewModel._context">
+            <summary>Database context for data operations</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserDetailViewModel._navigationService">
+            <summary>Navigation service for page transitions</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserDetailViewModel._authService">
+            <summary>Authentication service for user role verification</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserDetailViewModel._userId">
+            <summary>The ID of the user being edited (0 for new users)</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserDetailViewModel._currentUser">
+            <summary>The current user entity being edited</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserDetailViewModel._firstName">
+            <summary>User's first name</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserDetailViewModel._lastName">
+            <summary>User's last name</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserDetailViewModel._email">
+            <summary>User's email address</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserDetailViewModel._password">
+            <summary>User's password (for new users only)</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserDetailViewModel._confirmPassword">
+            <summary>Password confirmation field</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserDetailViewModel._isActive">
+            <summary>Whether the user account is active</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserDetailViewModel._isLoading">
+            <summary>Loading state indicator</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserDetailViewModel._isNewUser">
+            <summary>Flag indicating if this is a new user creation</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserDetailViewModel._errorMessage">
+            <summary>Error message to display to user</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserDetailViewModel._successMessage">
+            <summary>Success message to display to user</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserDetailViewModel._availableRoles">
+            <summary>Collection of all available roles for assignment</summary>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserDetailViewModel.#ctor(StarterApp.Database.Data.AppDbContext,StarterApp.Services.INavigationService,StarterApp.Services.IAuthenticationService)">
+            <summary>
+            Initializes a new instance of the UserDetailViewModel class.
+            </summary>
+            <param name="context">The database context for data operations</param>
+            <param name="navigationService">The navigation service for page transitions</param>
+            <param name="authService">The authentication service for role verification</param>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.UserId">
+            <summary>
+            Gets or sets the user ID. Setting this property triggers user loading.
+            </summary>
+            <value>The user ID (0 for new users)</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.FirstName">
+            <summary>
+            Gets or sets the user's first name.
+            </summary>
+            <value>The first name of the user</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.LastName">
+            <summary>
+            Gets or sets the user's last name.
+            </summary>
+            <value>The last name of the user</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.Email">
+            <summary>
+            Gets or sets the user's email address.
+            </summary>
+            <value>The email address of the user</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.Password">
+            <summary>
+            Gets or sets the user's password (visible only for new users).
+            </summary>
+            <value>The password for new user accounts</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.ConfirmPassword">
+            <summary>
+            Gets or sets the password confirmation field.
+            </summary>
+            <value>The password confirmation string</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.IsActive">
+            <summary>
+            Gets or sets whether the user account is active.
+            </summary>
+            <value>True if the user account is active, false otherwise</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.IsLoading">
+            <summary>
+            Gets or sets the loading state of the view model.
+            </summary>
+            <value>True if an operation is in progress, false otherwise</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.IsNewUser">
+            <summary>
+            Gets or sets whether this is a new user creation scenario.
+            </summary>
+            <value>True if creating a new user, false if editing existing user</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.ErrorMessage">
+            <summary>
+            Gets or sets the error message to display to the user.
+            </summary>
+            <value>The error message string</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.SuccessMessage">
+            <summary>
+            Gets or sets the success message to display to the user.
+            </summary>
+            <value>The success message string</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.AvailableRoles">
+            <summary>
+            Gets or sets the collection of available roles for assignment.
+            </summary>
+            <value>Observable collection of role items</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.PageTitle">
+            <summary>
+            Gets the page title based on whether this is a new user or edit scenario.
+            </summary>
+            <value>"Create New User" for new users, "Edit User" for existing users</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.ShowPasswordFields">
+            <summary>
+            Gets whether password fields should be shown (only for new users).
+            </summary>
+            <value>True if password fields should be visible, false otherwise</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.CanDeleteCurrentUser">
+            <summary>
+            Gets whether the current user can be deleted (not new user and not the currently logged-in user).
+            </summary>
+            <value>True if the user can be deleted, false otherwise</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.SaveUserCommand">
+            <summary>Command to save the user (create or update)</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.DeleteUserCommand">
+            <summary>Command to delete the user</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.AddRoleCommand">
+            <summary>Command to add a role to the user</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.RemoveRoleCommand">
+            <summary>Command to remove a role from the user</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.BackCommand">
+            <summary>Command to navigate back to the user list</summary>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserDetailViewModel.NavigateToDashboardAsync">
+            @brief Navigates to the dashboard page
+            @return A task representing the asynchronous navigation operation
+        </member>
+        <member name="M:StarterApp.ViewModels.UserDetailViewModel.LoadUserAsync">
+            <summary>
+            Loads user data based on the current UserId.
+            For UserId = 0, initializes new user creation mode.
+            For UserId > 0, loads existing user data from database.
+            </summary>
+            <returns>A task representing the asynchronous operation</returns>
+            <exception cref="T:System.UnauthorizedAccessException">Thrown when user doesn't have admin role</exception>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserDetailViewModel.CanSaveUser">
+            <summary>
+            Determines whether the save user command can be executed.
+            </summary>
+            <returns>True if the save command can be executed, false otherwise</returns>
+            <remarks>
+            Validates that required fields are filled and for new users, password fields are completed.
+            </remarks>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserDetailViewModel.SaveUserAsync">
+            <summary>
+            Saves the user data (creates new user or updates existing user).
+            </summary>
+            <returns>A task representing the asynchronous save operation</returns>
+            <exception cref="T:System.InvalidOperationException">Thrown when validation fails or duplicate email exists</exception>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserDetailViewModel.CreateUserAsync">
+            <summary>
+            Creates a new user in the database with the specified details and roles.
+            </summary>
+            <returns>A task representing the asynchronous create operation</returns>
+            <exception cref="T:System.InvalidOperationException">Thrown when a user with the same email already exists</exception>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserDetailViewModel.UpdateUserAsync">
+            <summary>
+            Updates an existing user's information in the database.
+            </summary>
+            <returns>A task representing the asynchronous update operation</returns>
+            <exception cref="T:System.InvalidOperationException">Thrown when email is already used by another user</exception>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserDetailViewModel.CanDeleteUser">
+            <summary>
+            Determines whether the delete user command can be executed.
+            </summary>
+            <returns>True if the delete command can be executed, false otherwise</returns>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserDetailViewModel.DeleteUserAsync">
+            <summary>
+            Performs a soft delete of the current user after confirmation.
+            </summary>
+            <returns>A task representing the asynchronous delete operation</returns>
+            <remarks>
+            This method performs a soft delete by setting IsActive to false and DeletedAt timestamp.
+            It also deactivates all associated user roles.
+            </remarks>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserDetailViewModel.AddRoleAsync(StarterApp.ViewModels.RoleItem)">
+            <summary>
+            Adds a role to the current user.
+            </summary>
+            <param name="role">The role to add to the user</param>
+            <returns>A task representing the asynchronous add role operation</returns>
+            <remarks>
+            Only works for existing users (not new user creation mode).
+            </remarks>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserDetailViewModel.RemoveRoleAsync(StarterApp.ViewModels.RoleItem)">
+            <summary>
+            Removes a role from the current user.
+            </summary>
+            <param name="role">The role to remove from the user</param>
+            <returns>A task representing the asynchronous remove role operation</returns>
+            <remarks>
+            Performs a soft delete by marking the user role as deleted rather than physically removing it.
+            </remarks>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserDetailViewModel.ValidateInput">
+            <summary>
+            Validates all user input fields.
+            </summary>
+            <returns>True if all validation passes, false otherwise</returns>
+            <remarks>
+            Validates required fields, email format, and password requirements for new users.
+            Sets appropriate error messages when validation fails.
+            </remarks>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserDetailViewModel.IsValidEmail(System.String)">
+            <summary>
+            Validates email address format using regular expression.
+            </summary>
+            <param name="email">The email address to validate</param>
+            <returns>True if email format is valid, false otherwise</returns>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserDetailViewModel.NavigateBackAsync">
+            <summary>
+            Navigates back to the user list page.
+            </summary>
+            <returns>A task representing the asynchronous navigation operation</returns>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserDetailViewModel.ClearMessages">
+            <summary>
+            Clears both error and success messages.
+            </summary>
+        </member>
+        <member name="E:StarterApp.ViewModels.UserDetailViewModel.PropertyChanged">
+            <summary>
+            Occurs when a property value changes.
+            </summary>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserDetailViewModel.OnPropertyChanged(System.String)">
+            <summary>
+            Raises the PropertyChanged event for the specified property.
+            </summary>
+            <param name="propertyName">The name of the property that changed</param>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserDetailViewModel.navigateToDashboardCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.UserDetailViewModel.NavigateToDashboardCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserDetailViewModel.NavigateToDashboardCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.UserDetailViewModel.NavigateToDashboardAsync"/>.</summary>
+        </member>
+        <member name="T:StarterApp.ViewModels.RoleItem">
+            <summary>
+            Represents a role item in the user interface with assignment state.
+            </summary>
+            <remarks>
+            This class is used to display roles in the UI with the ability to track
+            whether the role is assigned to the current user and provide appropriate
+            button text and colors for add/remove actions.
+            </remarks>
+        </member>
+        <member name="F:StarterApp.ViewModels.RoleItem._isAssigned">
+            <summary>Flag indicating whether this role is assigned to the current user</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.RoleItem.Id">
+            <summary>
+            Gets or sets the unique identifier for the role.
+            </summary>
+            <value>The role ID</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.RoleItem.Name">
+            <summary>
+            Gets or sets the name of the role.
+            </summary>
+            <value>The role name</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.RoleItem.Description">
+            <summary>
+            Gets or sets the description of the role.
+            </summary>
+            <value>The role description</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.RoleItem.IsAssigned">
+            <summary>
+            Gets or sets whether this role is assigned to the current user.
+            </summary>
+            <value>True if the role is assigned, false otherwise</value>
+            <remarks>
+            Setting this property also updates the ButtonText and ButtonColor properties.
+            </remarks>
+        </member>
+        <member name="P:StarterApp.ViewModels.RoleItem.ButtonText">
+            <summary>
+            Gets the text to display on the action button.
+            </summary>
+            <value>"Remove" if assigned, "Add" if not assigned</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.RoleItem.ButtonColor">
+            <summary>
+            Gets the color for the action button.
+            </summary>
+            <value>Red (#dc3545) if assigned, Green (#28a745) if not assigned</value>
+        </member>
+        <member name="E:StarterApp.ViewModels.RoleItem.PropertyChanged">
+            <summary>
+            Occurs when a property value changes.
+            </summary>
+        </member>
+        <member name="M:StarterApp.ViewModels.RoleItem.OnPropertyChanged(System.String)">
+            <summary>
+            Raises the PropertyChanged event for the specified property.
+            </summary>
+            <param name="propertyName">The name of the property that changed</param>
+        </member>
+        <member name="T:StarterApp.ViewModels.UserListViewModel">
+            <summary>
+            ViewModel for managing the user list display and interactions in the application.
+            Provides functionality for loading, filtering, searching, and navigating users.
+            Implements MVVM pattern with data binding support through INotifyPropertyChanged.
+            </summary>
+            <remarks>
+            This ViewModel requires admin privileges to function properly. Non-admin users
+            will be redirected to the main page when attempting to load users.
+            
+            Key features:
+            - User loading with role information
+            - Real-time filtering by role and search text
+            - Pull-to-refresh functionality
+            - Navigation to user details and creation
+            - Admin-only access control
+            </remarks>
+            <inheritdoc/>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserListViewModel._context">
+            <summary>Database context for accessing user data</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserListViewModel._navigationService">
+            <summary>Service for handling navigation between pages</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserListViewModel._authenticationService">
+            <summary>Service for authentication and authorization checks</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserListViewModel._users">
+            <summary>Complete collection of users loaded from database</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserListViewModel._filteredUsers">
+            <summary>Filtered collection of users based on current search and role filters</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserListViewModel._selectedRoleFilter">
+            <summary>Currently selected role filter ("All" or specific role name)</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserListViewModel._searchText">
+            <summary>Current search text for filtering users</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserListViewModel._isLoading">
+            <summary>Indicates whether initial user loading is in progress</summary>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserListViewModel._isRefreshing">
+            <summary>Indicates whether refresh operation is in progress</summary>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserListViewModel.#ctor(StarterApp.Database.Data.AppDbContext,StarterApp.Services.INavigationService,StarterApp.Services.IAuthenticationService)">
+            <summary>
+            Initializes a new instance of the UserListViewModel class.
+            </summary>
+            <param name="context">Database context for user data access</param>
+            <param name="navigationService">Service for page navigation</param>
+            <param name="authenticationService">Service for authentication and authorization</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when any parameter is null</exception>
+            <remarks>
+            The constructor automatically initiates user loading in the background
+            and sets up role filter options based on available roles in the system.
+            </remarks>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListViewModel.Users">
+            <summary>
+            Gets or sets the complete collection of users loaded from the database.
+            </summary>
+            <value>Observable collection containing all active users with their role information</value>
+            <remarks>
+            This collection is populated by LoadUsersAsync and serves as the source
+            for applying filters to create the FilteredUsers collection.
+            </remarks>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListViewModel.FilteredUsers">
+            <summary>
+            Gets or sets the filtered collection of users based on current search and role filters.
+            </summary>
+            <value>Observable collection containing users that match current filter criteria</value>
+            <remarks>
+            This collection is bound to the UI and automatically updates when filters change.
+            It represents a subset of the Users collection based on SelectedRoleFilter and SearchText.
+            </remarks>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListViewModel.RoleFilterOptions">
+            <summary>
+            Gets the collection of available role filter options.
+            </summary>
+            <value>Observable collection containing "All" plus all available role names</value>
+            <remarks>
+            This collection is populated during initialization and remains static.
+            It includes "All" as the default option plus all roles defined in RoleConstants.
+            </remarks>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListViewModel.SelectedRoleFilter">
+            <summary>
+            Gets or sets the currently selected role filter.
+            </summary>
+            <value>String representing the selected role filter ("All" or specific role name)</value>
+            <remarks>
+            Setting this property automatically triggers filter reapplication through ApplyFilters().
+            Default value is "All" which shows users with any role.
+            </remarks>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListViewModel.SearchText">
+            <summary>
+            Gets or sets the search text for filtering users.
+            </summary>
+            <value>String used to search across user names, emails, and roles</value>
+            <remarks>
+            Setting this property automatically triggers filter reapplication through ApplyFilters().
+            Search is case-insensitive and matches against FullName, Email, and RolesDisplay.
+            </remarks>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListViewModel.IsLoading">
+            <summary>
+            Gets or sets a value indicating whether initial user loading is in progress.
+            </summary>
+            <value>True if loading users for the first time; otherwise, false</value>
+            <remarks>
+            This property is used to show/hide loading indicators in the UI during initial data load.
+            It's distinct from IsRefreshing which is used for pull-to-refresh operations.
+            </remarks>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListViewModel.IsRefreshing">
+            <summary>
+            Gets or sets a value indicating whether a refresh operation is in progress.
+            </summary>
+            <value>True if refresh is in progress; otherwise, false</value>
+            <remarks>
+            This property is used to control pull-to-refresh UI indicators.
+            It's distinct from IsLoading which is used for initial data loading.
+            </remarks>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListViewModel.IsAdmin">
+            <summary>
+            Gets a value indicating whether the current user has admin privileges.
+            </summary>
+            <value>True if the current user is an admin; otherwise, false</value>
+            <remarks>
+            This property is used for conditional UI display and access control.
+            Only admin users can access the user list functionality.
+            </remarks>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListViewModel.LoadUsersCommand">
+            <summary>Gets the command for loading users from the database</summary>
+            <value>Command that executes LoadUsersAsync when invoked</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListViewModel.RefreshCommand">
+            <summary>Gets the command for refreshing the user list</summary>
+            <value>Command that executes RefreshUsersAsync when invoked</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListViewModel.UserSelectedCommand">
+            <summary>Gets the command for handling user selection</summary>
+            <value>Command that navigates to user detail page when a user is selected</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListViewModel.CreateUserCommand">
+            <summary>Gets the command for creating a new user</summary>
+            <value>Command that navigates to user creation page when invoked</value>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserListViewModel.LoadUsersAsync">
+            <summary>
+            Loads users from the database asynchronously with role information.
+            </summary>
+            <returns>A task representing the asynchronous operation</returns>
+            <remarks>
+            This method:
+            - Checks admin privileges and redirects if unauthorized
+            - Loads active users with their roles from the database
+            - Orders users by first name, then last name
+            - Creates UserListItem objects with formatted role information
+            - Applies current filters to populate FilteredUsers
+            - Handles exceptions gracefully with debug logging
+            </remarks>
+            <exception cref="T:System.UnauthorizedAccessException">May be thrown if user loses admin privileges during execution</exception>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserListViewModel.RefreshUsersAsync">
+            <summary>
+            Refreshes the user list by reloading data from the database.
+            </summary>
+            <returns>A task representing the asynchronous refresh operation</returns>
+            <remarks>
+            This method is typically called by pull-to-refresh gestures in the UI.
+            It sets IsRefreshing to true during the operation and calls LoadUsersAsync
+            to reload the data.
+            </remarks>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserListViewModel.ApplyFilters">
+            <summary>
+            Applies current search and role filters to the Users collection.
+            </summary>
+            <remarks>
+            This method:
+            - Filters users by selected role (if not "All")
+            - Applies search text filter across FullName, Email, and RolesDisplay
+            - Updates FilteredUsers collection with matching results
+            - Uses case-insensitive string matching for search
+            
+            Called automatically when SelectedRoleFilter or SearchText properties change.
+            </remarks>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserListViewModel.NavigateToDashboardAsync">
+            @brief Navigates to the dashboard page
+            @return A task representing the asynchronous navigation operation
+        </member>
+        <member name="M:StarterApp.ViewModels.UserListViewModel.NavigateToUserDetailAsync(StarterApp.ViewModels.UserListItem)">
+            <summary>
+            Navigates to the user detail page for the specified user.
+            </summary>
+            <param name="user">The user to view details for</param>
+            <returns>A task representing the asynchronous navigation operation</returns>
+            <remarks>
+            This method is called when a user is selected from the list.
+            It navigates to the UserDetailPage with the user's ID as a parameter.
+            If the user parameter is null, no navigation occurs.
+            </remarks>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserListViewModel.NavigateToCreateUserAsync">
+            <summary>
+            Navigates to the user creation page.
+            </summary>
+            <returns>A task representing the asynchronous navigation operation</returns>
+            <remarks>
+            This method navigates to the UserDetailPage with userId=0 to indicate
+            that a new user should be created rather than editing an existing one.
+            </remarks>
+        </member>
+        <member name="E:StarterApp.ViewModels.UserListViewModel.PropertyChanged">
+            <summary>
+            Occurs when a property value changes.
+            </summary>
+            <remarks>
+            This event is part of the INotifyPropertyChanged interface and is used
+            by the data binding system to update the UI when property values change.
+            </remarks>
+        </member>
+        <member name="M:StarterApp.ViewModels.UserListViewModel.OnPropertyChanged(System.String)">
+            <summary>
+            Raises the PropertyChanged event for the specified property.
+            </summary>
+            <param name="propertyName">Name of the property that changed. If null, the caller member name is used.</param>
+            <remarks>
+            This method is called by property setters to notify the UI of property changes.
+            The CallerMemberName attribute automatically provides the property name when called from a property setter.
+            </remarks>
+        </member>
+        <member name="F:StarterApp.ViewModels.UserListViewModel.navigateToDashboardCommand">
+            <summary>The backing field for <see cref="P:StarterApp.ViewModels.UserListViewModel.NavigateToDashboardCommand"/>.</summary>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListViewModel.NavigateToDashboardCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:StarterApp.ViewModels.UserListViewModel.NavigateToDashboardAsync"/>.</summary>
+        </member>
+        <member name="T:StarterApp.ViewModels.UserListItem">
+            <summary>
+            Represents a user item in the user list with display-friendly properties.
+            </summary>
+            <remarks>
+            This class serves as a data transfer object for displaying user information
+            in the user list. It includes formatted properties like FullName and RolesDisplay
+            for easy binding to UI elements.
+            </remarks>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListItem.Id">
+            <summary>Gets or sets the unique identifier for the user</summary>
+            <value>Integer representing the user's primary key in the database</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListItem.FirstName">
+            <summary>Gets or sets the user's first name</summary>
+            <value>String containing the user's first name, defaults to empty string</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListItem.LastName">
+            <summary>Gets or sets the user's last name</summary>
+            <value>String containing the user's last name, defaults to empty string</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListItem.Email">
+            <summary>Gets or sets the user's email address</summary>
+            <value>String containing the user's email, defaults to empty string</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListItem.FullName">
+            <summary>Gets or sets the user's full name (combination of first and last name)</summary>
+            <value>String containing the formatted full name, defaults to empty string</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListItem.CreatedAt">
+            <summary>Gets or sets the date and time when the user was created</summary>
+            <value>DateTime representing when the user account was created</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListItem.IsActive">
+            <summary>Gets or sets a value indicating whether the user account is active</summary>
+            <value>True if the user account is active; otherwise, false</value>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListItem.Roles">
+            <summary>Gets or sets the collection of role names assigned to the user</summary>
+            <value>List of strings containing the names of roles assigned to the user</value>
+            <remarks>Only includes active role assignments</remarks>
+        </member>
+        <member name="P:StarterApp.ViewModels.UserListItem.RolesDisplay">
+            <summary>Gets or sets the display-friendly string of user roles</summary>
+            <value>Comma-separated string of role names for display purposes</value>
+            <remarks>
+            This property is populated by joining the Roles collection with commas
+            and is used for display in the UI and search functionality.
+            </remarks>
+        </member>
+        <member name="T:StarterApp.Resource">
+            <summary>
+            Android Resource Designer class.
+            Exposes the Android Resource designer assembly into the project Namespace.
+            </summary>
+        </member>
+        <member name="T:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs">
+            <summary>
+            A helper type providing cached, reusable <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instances
+            for all properties generated with <see cref="T:CommunityToolkit.Mvvm.ComponentModel.ObservablePropertyAttribute"/>.
+            </summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsBusy">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsBusy" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Title">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Title" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.ErrorMessage">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "ErrorMessage" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.HasError">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "HasError" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Email">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Email" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Password">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Password" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.RememberMe">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "RememberMe" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.CurrentUser">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "CurrentUser" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.WelcomeMessage">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "WelcomeMessage" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsAdmin">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsAdmin" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.CurrentPassword">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "CurrentPassword" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.NewPassword">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "NewPassword" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.ConfirmNewPassword">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "ConfirmNewPassword" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsChangingPassword">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsChangingPassword" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.FirstName">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "FirstName" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.LastName">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "LastName" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.ConfirmPassword">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "ConfirmPassword" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.AcceptTerms">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "AcceptTerms" generated properties.</summary>
+        </member>
+        <member name="T:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs">
+            <summary>
+            A helper type providing cached, reusable <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instances
+            for all properties generated with <see cref="T:CommunityToolkit.Mvvm.ComponentModel.ObservablePropertyAttribute"/>.
+            </summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsBusy">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsBusy" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Title">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Title" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.ErrorMessage">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "ErrorMessage" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.HasError">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "HasError" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Email">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Email" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Password">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Password" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.RememberMe">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "RememberMe" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.CurrentUser">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "CurrentUser" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.WelcomeMessage">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "WelcomeMessage" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsAdmin">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsAdmin" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.CurrentPassword">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "CurrentPassword" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.NewPassword">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "NewPassword" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.ConfirmNewPassword">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "ConfirmNewPassword" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsChangingPassword">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsChangingPassword" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.FirstName">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "FirstName" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.LastName">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "LastName" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.ConfirmPassword">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "ConfirmPassword" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.AcceptTerms">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "AcceptTerms" generated properties.</summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,15 @@
+/workspace/StarterApp.Database/bin/Debug/net8.0/appsettings.json
+/workspace/StarterApp.Database/bin/Debug/net8.0/StarterApp.Database.deps.json
+/workspace/StarterApp.Database/bin/Debug/net8.0/StarterApp.Database.runtimeconfig.json
+/workspace/StarterApp.Database/bin/Debug/net8.0/StarterApp.Database.dll
+/workspace/StarterApp.Database/bin/Debug/net8.0/StarterApp.Database.pdb
+/workspace/StarterApp.Database/obj/Debug/net8.0/StarterApp.Database.csproj.AssemblyReference.cache
+/workspace/StarterApp.Database/obj/Debug/net8.0/StarterApp.Database.GeneratedMSBuildEditorConfig.editorconfig
+/workspace/StarterApp.Database/obj/Debug/net8.0/StarterApp.Database.AssemblyInfoInputs.cache
+/workspace/StarterApp.Database/obj/Debug/net8.0/StarterApp.Database.AssemblyInfo.cs
+/workspace/StarterApp.Database/obj/Debug/net8.0/StarterApp.Database.csproj.CoreCompileInputs.cache
+/workspace/StarterApp.Database/obj/Debug/net8.0/StarterApp.Database.dll
+/workspace/StarterApp.Database/obj/Debug/net8.0/refint/StarterApp.Database.dll
+/workspace/StarterApp.Database/obj/Debug/net8.0/StarterApp.Database.pdb
+/workspace/StarterApp.Database/obj/Debug/net8.0/StarterApp.Database.genruntimeconfig.cache
+/workspace/StarterApp.Database/obj/Debug/net8.0/ref/StarterApp.Database.dll

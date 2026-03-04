@@ -1,0 +1,25 @@
+{
+    "name": "MAUI Dev Environment",
+    "dockerComposeFile": ["../docker-compose.yml"],
+    "service": "app",
+    "workspaceFolder": "/workspace",
+
+     "remoteEnv": {
+    "ADB_SERVER_SOCKET": "tcp:host.docker.internal:5037",
+    "ANDROID_SERIAL": "emulator-5554"
+  },
+  
+    "postStartCommand": "grep -qxF \"export ADB_SERVER_SOCKET=tcp:host.docker.internal:5037\" ~/.bashrc || echo \"export ADB_SERVER_SOCKET=tcp:host.docker.internal:5037\" >> ~/.bashrc",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "cweijan.vscode-postgresql-client2",
+                "ms-dotnettools.dotnet-maui",
+                "toroxx.vscode-avdmanager"
+            ]
+        }
+    },
+    "remoteUser": "root"
+}
+
+
