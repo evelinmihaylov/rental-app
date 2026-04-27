@@ -5,7 +5,7 @@ using BCrypt.Net;
 
 namespace StarterApp.Services;
 
-public class AuthenticationService : IAuthenticationService
+public class LocalAuthenticationService : IAuthenticationService
 {
     private readonly AppDbContext _context;
     private User? _currentUser;
@@ -13,7 +13,7 @@ public class AuthenticationService : IAuthenticationService
 
     public event EventHandler<bool>? AuthenticationStateChanged;
 
-    public AuthenticationService(AppDbContext context)
+    public LocalAuthenticationService(AppDbContext context)
     {
         _context = context;
     }
@@ -26,6 +26,7 @@ public class AuthenticationService : IAuthenticationService
 
     public async Task<AuthenticationResult> LoginAsync(string email, string password)
     {
+        Console.WriteLine(" USING LOCAL AUTH");
         try
         {
             var user = await _context.Users
@@ -112,6 +113,16 @@ public class AuthenticationService : IAuthenticationService
         _currentUserRoles.Clear();
         AuthenticationStateChanged?.Invoke(this, false);
         return Task.CompletedTask;
+    }
+
+    public Task<bool> EnsureValidSessionAsync()
+    {
+        return Task.FromResult(IsAuthenticated);
+    }
+
+    public Task HandleSessionExpiredAsync()
+    {
+        return LogoutAsync();
     }
 
     public bool HasRole(string roleName)

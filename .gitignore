@@ -5,6 +5,7 @@
 
 # IDE settings
 .idea/
+.vscode/
 *.swp
 *.swo
 *~
@@ -13,7 +14,7 @@
 .DS_Store
 Thumbs.db
 
-# Docker volumes (if using bind mounts for data)
+# Docker volumes
 postgres_data/
 
 # .NET build outputs
@@ -22,6 +23,13 @@ postgres_data/
 [Ll]og/
 [Ll]ogs/
 
+# Test / coverage output
+TestResults/
+coverage/
+coverage.*
+*.coverage
+*.coveragexml
+
 # User-specific files
 *.rsuser
 *.suo
@@ -29,3 +37,10 @@ postgres_data/
 *.userosscache
 *.sln.docstates
 
+# NuGet / local packages
+packages/
+*.nupkg
+
+# MAUI / Android generated artifacts
+*.apk
+*.aab

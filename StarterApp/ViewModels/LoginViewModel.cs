@@ -20,6 +20,8 @@ public partial class LoginViewModel : BaseViewModel
     /// @brief Navigation service for managing page navigation
     private readonly INavigationService _navigationService;
 
+    private readonly AppShell _appShell;
+
     /// @brief The user's email address
     /// @details Observable property bound to the email input field
     [ObservableProperty]
@@ -41,25 +43,24 @@ public partial class LoginViewModel : BaseViewModel
     [NotifyCanExecuteChangedFor(nameof(LoginCommand))]
     private bool _isBusy;
 
-    /// @brief Default constructor for design-time support
-    /// @details Sets the title to "Login"
-    public LoginViewModel()
-    {
-        // Default constructor for design time support
-        Title = "Login";
-    }
 
-    /// @brief Initializes a new instance of the LoginViewModel class
+     /// @brief Initializes a new instance of the LoginViewModel class
     /// @param authService The authentication service instance
     /// @param navigationService The navigation service instance
     /// @details Sets up the required services and initializes the title
-    public LoginViewModel(IAuthenticationService authService, INavigationService navigationService)
+    public LoginViewModel( IAuthenticationService authService,
+        INavigationService navigationService,
+        AppShell appShell)
     {
+        // Default constructor for design time support
         _authService = authService;
         _navigationService = navigationService;
+        _appShell = appShell;
         Title = "Login";
     }
 
+ 
+    
     /// @brief Performs user login authentication
     /// @details Relay command that validates input and attempts to authenticate the user
     /// @return A task representing the asynchronous login operation
@@ -84,7 +85,7 @@ public partial class LoginViewModel : BaseViewModel
 
             if (result.IsSuccess)
             {
-                await _navigationService.NavigateToAsync("MainPage");
+                Application.Current!.Windows[0].Page = _appShell;
             }
             else
             {

@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="StarterApp.Views.RentalsPage"
+             x:Name="RentalsPageRoot"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:StarterApp.Database.Models;assembly=StarterApp.Database"
+             Title="{Binding Title}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Refresh"
+                     Command="{Binding RefreshCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="*" Padding="0">
+
+        <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}">
+
+            <ScrollView>
+                <VerticalStackLayout Padding="15" Spacing="20">
+
+                    <!-- Error Message -->
+                    <Border BackgroundColor="{AppThemeBinding Light=#FFEBEE, Dark=#1B0000}"
+                            Stroke="{AppThemeBinding Light=#F44336, Dark=#EF5350}"
+                            StrokeThickness="1"
+                            Padding="15"
+                            IsVisible="{Binding HasError}">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Label Text="{Binding ErrorMessage}"
+                               TextColor="{AppThemeBinding Light=#D32F2F, Dark=#EF5350}"
+                               FontSize="14" />
+                    </Border>
+
+                    <!-- Incoming Rentals -->
+                    <Label Text="Incoming Rentals"
+                           FontSize="20"
+                           FontAttributes="Bold" />
+
+                    <CollectionView ItemsSource="{Binding IncomingRentals}"
+                                    SelectionMode="None">
+
+                        <CollectionView.EmptyView>
+                            <StackLayout Padding="10">
+                                <Label Text="No incoming rentals"
+                                       FontSize="16"
+                                       FontAttributes="Bold" />
+                                <Label Text="Rental requests for your items will appear here."
+                                       TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray400}}" />
+                            </StackLayout>
+                        </CollectionView.EmptyView>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Rental">
+                                <Border Margin="0,5"
+                                        Padding="15"
+                                        Stroke="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
+                                        StrokeThickness="1"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+
+                                    <VerticalStackLayout Spacing="5">
+                                        <Label Text="{Binding ItemTitle}"
+                                               FontSize="18"
+                                               FontAttributes="Bold" />
+
+                                        <Label Text="{Binding BorrowerName, StringFormat='Borrower: {0}'}"
+                                               FontSize="14" />
+
+                                        <Label Text="{Binding Status, StringFormat='Status: {0}'}"
+                                               FontSize="14" />
+
+                                        <Label Text="{Binding StartDate, StringFormat='Start: {0:dd/MM/yyyy}'}"
+                                               FontSize="14" />
+
+                                        <Label Text="{Binding EndDate, StringFormat='End: {0:dd/MM/yyyy}'}"
+                                               FontSize="14" />
+
+                                        <Label Text="{Binding TotalPrice, StringFormat='Total: £{0}'}"
+                                               FontSize="14"
+                                               TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray400}}" />
+
+                                        <FlexLayout Direction="Row"
+                                                    Wrap="Wrap"
+                                                    Margin="0,10,0,0">
+
+                                            <Button Text="Approve"
+                                                    Margin="0,0,10,10"
+                                                    Padding="14,8"
+                                                    BackgroundColor="#2E7D32"
+                                                    TextColor="White"
+                                                    Command="{Binding Source={x:Reference RentalsPageRoot}, Path=BindingContext.ApproveRentalCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    IsVisible="False">
+                                                <Button.Triggers>
+                                                    <DataTrigger TargetType="Button"
+                                                                 Binding="{Binding Status}"
+                                                                 Value="Requested">
+                                                        <Setter Property="IsVisible" Value="True" />
+                                                    </DataTrigger>
+                                                </Button.Triggers>
+                                            </Button>
+
+                                            <Button Text="Reject"
+                                                    Margin="0,0,10,10"
+                                                    Padding="14,8"
+                                                    BackgroundColor="#C62828"
+                                                    TextColor="White"
+                                                    Command="{Binding Source={x:Reference RentalsPageRoot}, Path=BindingContext.RejectRentalCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    IsVisible="False">
+                                                <Button.Triggers>
+                                                    <DataTrigger TargetType="Button"
+                                                                 Binding="{Binding Status}"
+                                                                 Value="Requested">
+                                                        <Setter Property="IsVisible" Value="True" />
+                                                    </DataTrigger>
+                                                </Button.Triggers>
+                                            </Button>
+
+                                            <Button Text="Mark Out for Rent"
+                                                    Margin="0,0,10,10"
+                                                    Padding="14,8"
+                                                    BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+                                                    TextColor="White"
+                                                    Command="{Binding Source={x:Reference RentalsPageRoot}, Path=BindingContext.MarkOutForRentCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    IsVisible="False">
+                                                <Button.Triggers>
+                                                    <DataTrigger TargetType="Button"
+                                                                 Binding="{Binding Status}"
+                                                                 Value="Approved">
+                                                        <Setter Property="IsVisible" Value="True" />
+                                                    </DataTrigger>
+                                                </Button.Triggers>
+                                            </Button>
+
+                                            <Button Text="Complete"
+                                                    Margin="0,0,10,10"
+                                                    Padding="14,8"
+                                                    BackgroundColor="#1565C0"
+                                                    TextColor="White"
+                                                    Command="{Binding Source={x:Reference RentalsPageRoot}, Path=BindingContext.CompleteRentalCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    IsVisible="False">
+                                                <Button.Triggers>
+                                                    <DataTrigger TargetType="Button"
+                                                                 Binding="{Binding Status}"
+                                                                 Value="Returned">
+                                                        <Setter Property="IsVisible" Value="True" />
+                                                    </DataTrigger>
+                                                </Button.Triggers>
+                                            </Button>
+
+                                        </FlexLayout>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <!-- Outgoing Rentals -->
+                    <Label Text="Outgoing Rentals"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           Margin="0,10,0,0" />
+
+                    <CollectionView ItemsSource="{Binding OutgoingRentals}"
+                                    SelectionMode="None">
+
+                        <CollectionView.EmptyView>
+                            <StackLayout Padding="10">
+                                <Label Text="No outgoing rentals"
+                                       FontSize="16"
+                                       FontAttributes="Bold" />
+                                <Label Text="Rental requests you make will appear here."
+                                       TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray400}}" />
+                            </StackLayout>
+                        </CollectionView.EmptyView>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Rental">
+                                <Border Margin="0,5"
+                                        Padding="15"
+                                        Stroke="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
+                                        StrokeThickness="1"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+
+                                    <VerticalStackLayout Spacing="5">
+                                        <Label Text="{Binding ItemTitle}"
+                                               FontSize="18"
+                                               FontAttributes="Bold" />
+
+                                        <Label Text="{Binding OwnerName, StringFormat='Owner: {0}'}"
+                                               FontSize="14" />
+
+                                        <Label Text="{Binding Status, StringFormat='Status: {0}'}"
+                                               FontSize="14" />
+
+                                        <Label Text="{Binding StartDate, StringFormat='Start: {0:dd/MM/yyyy}'}"
+                                               FontSize="14" />
+
+                                        <Label Text="{Binding EndDate, StringFormat='End: {0:dd/MM/yyyy}'}"
+                                               FontSize="14" />
+
+                                        <Label Text="{Binding TotalPrice, StringFormat='Total: £{0}'}"
+                                               FontSize="14"
+                                               TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray400}}" />
+
+                                        <FlexLayout Direction="Row"
+                                                    Wrap="Wrap"
+                                                    Margin="0,10,0,0">
+
+                                            <Button Text="Mark Returned"
+                                                    Margin="0,0,10,10"
+                                                    Padding="14,8"
+                                                    BackgroundColor="#EF6C00"
+                                                    TextColor="White"
+                                                    Command="{Binding Source={x:Reference RentalsPageRoot}, Path=BindingContext.ReturnRentalCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    IsVisible="False">
+                                                <Button.Triggers>
+                                                    <DataTrigger TargetType="Button"
+                                                                 Binding="{Binding Status}"
+                                                                 Value="Out for Rent">
+                                                        <Setter Property="IsVisible" Value="True" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Button"
+                                                                 Binding="{Binding Status}"
+                                                                 Value="Overdue">
+                                                        <Setter Property="IsVisible" Value="True" />
+                                                    </DataTrigger>
+                                                </Button.Triggers>
+                                            </Button>
+
+                                        </FlexLayout>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+            </ScrollView>
+
+        </RefreshView>
+
+        <!-- Loading -->
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
+
+    </Grid>
+</ContentPage>

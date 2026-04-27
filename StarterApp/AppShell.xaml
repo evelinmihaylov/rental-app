@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Shell
-    x:Class="StarterApp.AppShell"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:views="clr-namespace:StarterApp.Views"
-    Shell.FlyoutBehavior="Disabled">
+<Shell x:Class="StarterApp.AppShell"
+       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:views="clr-namespace:StarterApp.Views"
+       Shell.FlyoutBehavior="Flyout">
 
-    <ShellContent ContentTemplate="{DataTemplate views:LoginPage}" />
+    <FlyoutItem Title="Items">
+        <ShellContent Title="All Items"
+                      ContentTemplate="{DataTemplate views:ItemsListPage}"
+                      Route="items" />
+
+        <ShellContent Title="Find Near Me"
+                      ContentTemplate="{DataTemplate views:NearbyItemsPage}"
+                      Route="nearbyitems" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Rentals">
+        <ShellContent Title="My Rentals"
+                      ContentTemplate="{DataTemplate views:RentalsPage}"
+                      Route="rentals" />
+    </FlyoutItem>
+
+     <MenuItem Text="Logout"
+              Command="{Binding LogoutCommand}" />
 
 </Shell>

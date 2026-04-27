@@ -103,7 +103,7 @@ namespace StarterApp.ViewModels
         private async Task LogoutAsync()
         {
             await _authService.LogoutAsync();
-            await _navigationService.NavigateToAsync("LoginPage");
+            await _navigationService.NavigateToRootAsync();
 
             LogoutCommand.NotifyCanExecuteChanged();
             NavigateToProfileCommand.NotifyCanExecuteChanged();
