@@ -1,0 +1,34 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+      - Development
+      - feature/**
+  pull_request:
+    branches:
+      - main
+      - Development
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore MAUI workloads
+        run: dotnet workload restore ./StarterApp/StarterApp.csproj
+
+      - name: Restore dependencies
+        run: dotnet restore ./StarterApp.sln
+
+      - name: Build solution
+        run: dotnet build ./StarterApp.sln --configuration Release --no-restore
