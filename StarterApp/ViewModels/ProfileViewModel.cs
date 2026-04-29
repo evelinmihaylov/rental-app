@@ -50,87 +50,56 @@ public partial class ProfileViewModel : BaseViewModel
     /// @param authService The authentication service instance
     /// @param navigationService The navigation service instance
     /// @details Sets up the required services, initializes the title, and loads user data
+    
+    public string FullNameText => CurrentUser?.FullName ?? "Unknown user";
+    public string EmailText => CurrentUser?.Email ?? "Unknown email";
+    public string AverageRatingText => CurrentUser?.AverageRating is double rating ? $"{rating:F1} / 5" : "No rating yet";
+    public string ItemsListedText => CurrentUser?.ItemsListed.ToString() ?? "0";
+    public string RentalsCompletedText => CurrentUser?.RentalsCompleted.ToString() ?? "0";
+    public string MemberSinceText => CurrentUser?.CreatedAt?.ToString("dd/MM/yyyy") ?? "Unknown";
+    public string PasswordToggleText => "Password change not available yet";
     public ProfileViewModel(IAuthenticationService authService, INavigationService navigationService)
     {
         _authService = authService;
         _navigationService = navigationService;
         Title = "Profile";
-
-        LoadUserData();
-    }
-
-    /// @brief Loads the current user's profile data
-    /// @details Retrieves the current user's information from the authentication service
-    private void LoadUserData()
-    {
         CurrentUser = _authService.CurrentUser;
     }
 
-    /// @brief Changes the user's password
-    /// @details Relay command that validates and performs the password change operation
-    /// @return A task representing the asynchronous password change operation
-    [RelayCommand]
-    private async Task ChangePasswordAsync()
+    partial void OnCurrentUserChanged(User? value)
     {
-        if (IsBusy)
-            return;
-
-        if (!ValidatePasswordChange())
-            return;
-
-        try
-        {
-            IsBusy = true;
-            ClearError();
-
-            var success = await _authService.ChangePasswordAsync(CurrentPassword, NewPassword);
-
-            if (success)
-            {
-                await Application.Current.MainPage.DisplayAlert("Success", "Password changed successfully!", "OK");
-                ClearPasswordFields();
-                IsChangingPassword = false;
-            }
-            else
-            {
-                SetError("Failed to change password. Please check your current password.");
-            }
-        }
-        catch (Exception ex)
-        {
-            SetError($"Password change failed: {ex.Message}");
-        }
-        finally
-        {
-            IsBusy = false;
-        }
+        OnPropertyChanged(nameof(FullNameText));
+        OnPropertyChanged(nameof(EmailText));
+        OnPropertyChanged(nameof(AverageRatingText));
+        OnPropertyChanged(nameof(ItemsListedText));
+        OnPropertyChanged(nameof(RentalsCompletedText));
+        OnPropertyChanged(nameof(MemberSinceText));
     }
 
-    /// @brief Toggles the password change mode
-    /// @details Relay command that shows/hides password change fields and clears data when hiding
+    partial void OnIsChangingPasswordChanged(bool value)
+    {
+        OnPropertyChanged(nameof(PasswordToggleText));
+    }
+
+    [RelayCommand]
+    private Task ChangePasswordAsync()
+    {
+        SetError("Password change is not available in this version yet.");
+        return Task.CompletedTask;
+    }
     [RelayCommand]
     private void TogglePasswordChangeMode()
     {
-        IsChangingPassword = !IsChangingPassword;
-        if (!IsChangingPassword)
-        {
-            ClearPasswordFields();
-            ClearError();
-        }
+       IsChangingPassword = false;
+       SetError("Password change is not available in this version yet.");
     }
 
-    /// @brief Navigates back to the previous page
-    /// @details Relay command that performs backward navigation
-    /// @return A task representing the asynchronous navigation operation
     [RelayCommand]
     private async Task NavigateBackAsync()
     {
         await _navigationService.NavigateBackAsync();
     }
 
-    /// @brief Validates the password change form data
-    /// @return True if validation passes, false otherwise
-    /// @details Checks all password change requirements and sets appropriate error messages
     private bool ValidatePasswordChange()
     {
         if (string.IsNullOrWhiteSpace(CurrentPassword))
@@ -166,8 +135,6 @@ public partial class ProfileViewModel : BaseViewModel
         return true;
     }
 
-    /// @brief Clears all password input fields
-    /// @details Resets all password-related properties to empty strings
     private void ClearPasswordFields()
     {
         CurrentPassword = string.Empty;

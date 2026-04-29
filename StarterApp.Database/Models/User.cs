@@ -28,5 +28,13 @@ public class User
     public List<UserRole> UserRoles { get; set; } = new List<UserRole>();
     
     [NotMapped]
+    public double? AverageRating { get; set; }
+    [NotMapped]
+    public int ItemsListed { get; set; }
+    [NotMapped]
+    public int RentalsCompleted { get; set; }
+    [NotMapped]
+    public List<Review> Reviews { get; set; } = new List<Review>();
+    [NotMapped]
     public string FullName => $"{FirstName} {LastName}";
 }

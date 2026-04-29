@@ -30,7 +30,7 @@ public partial class ItemsListViewModel : BaseViewModel
     /// Currently selected category filter (null = show all)
     /// </summary>
     [ObservableProperty]
-private Category? selectedCategory;
+    private Category? selectedCategory;
 
     /// <summary>
     /// Whether we're refreshing the list
@@ -127,10 +127,21 @@ private Category? selectedCategory;
     [RelayCommand]
     private async Task ViewItemAsync(Item item)
     {
-        if (item == null) return;
-        await Shell.Current.GoToAsync($"itemdetail?id={item.Id}");
-    }
+        if (item == null) 
+            return;
 
+        try
+        {
+             await Shell.Current.GoToAsync("itemdetail", new Dictionary<string, object>
+            {
+                ["id"] = item.Id
+            });
+        }
+             catch (Exception ex)
+            {
+                   SetError($"Open item failed: {ex.Message}");
+            }
+    }
     /// <summary>
     /// Refresh the items list (pull-to-refresh)
     /// </summary>
@@ -146,6 +157,6 @@ private Category? selectedCategory;
     /// </summary>
     partial void OnSelectedCategoryChanged(Category? value)
     {
-    _ = LoadItemsAsync();
+         _ = LoadItemsAsync();
     }
 }

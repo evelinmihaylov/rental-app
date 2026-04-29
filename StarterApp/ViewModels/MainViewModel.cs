@@ -85,7 +85,7 @@ public partial class MainViewModel : BaseViewModel
         if (result)
         {
             await _authService.LogoutAsync();
-            await _navigationService.NavigateToAsync("LoginPage");
+            await _navigationService.NavigateToRootAsync();
         }
     }
 
@@ -95,7 +95,7 @@ public partial class MainViewModel : BaseViewModel
     [RelayCommand]
     private async Task NavigateToProfileAsync()
     {
-        await _navigationService.NavigateToAsync("TempPage");
+        await _navigationService.NavigateToAsync("profile");
     }
 
     /// @brief Navigates to the settings page

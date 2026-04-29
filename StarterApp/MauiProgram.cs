@@ -43,6 +43,11 @@ public static class MauiProgram
 
             builder.Services.AddSingleton<ILocationService, LocationService>();
 
+            builder.Services.AddTransient<IReviewRepository, ReviewRepository>();
+            builder.Services.AddTransient<IReviewService, ReviewService>();
+            builder.Services.AddTransient<ReviewsViewModel>();
+            builder.Services.AddTransient<ReviewsPage>();
+
             
         }
         else
@@ -60,15 +65,15 @@ public static class MauiProgram
         builder.Services.AddSingleton<INavigationService, NavigationService>();
 
         // Shell and App
-        builder.Services.AddSingleton<AppShellViewModel>();
-        builder.Services.AddSingleton<AppShell>();
-        builder.Services.AddSingleton<App>();
+       builder.Services.AddTransient<AppShellViewModel>();
+       builder.Services.AddTransient<AppShell>();
+       builder.Services.AddSingleton<App>();
 
-        // Existing pages / viewmodels
+       // Existing pages / viewmodels
         builder.Services.AddTransient<MainViewModel>();
         builder.Services.AddTransient<MainPage>();
 
-        builder.Services.AddSingleton<LoginViewModel>();
+        builder.Services.AddTransient<LoginViewModel>();
         builder.Services.AddTransient<LoginPage>();
 
         builder.Services.AddSingleton<RegisterViewModel>();
@@ -79,9 +84,6 @@ public static class MauiProgram
 
         builder.Services.AddTransient<UserDetailViewModel>();
         builder.Services.AddTransient<UserDetailPage>();
-
-        builder.Services.AddSingleton<TempViewModel>();
-        builder.Services.AddTransient<TempPage>();
 
         // Item pages / viewmodels
         builder.Services.AddTransient<ItemsListViewModel>();
@@ -101,6 +103,11 @@ public static class MauiProgram
 
         builder.Services.AddTransient<NearbyItemsViewModel>();
         builder.Services.AddTransient<NearbyItemsPage>();
+         
+
+        builder.Services.AddTransient<ProfileViewModel>();
+        builder.Services.AddTransient<ProfilePage>();
+       
 
 #if DEBUG
         builder.Logging.AddDebug();

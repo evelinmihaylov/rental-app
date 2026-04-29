@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="StarterApp.Views.ProfilePage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="{Binding Title}">
+
+    <Grid RowDefinitions="*" Padding="0">
+        <ScrollView>
+            <VerticalStackLayout Padding="15" Spacing="20">
+
+                <Border BackgroundColor="{AppThemeBinding Light=#FFEBEE, Dark=#1B0000}"
+                        Stroke="{AppThemeBinding Light=#F44336, Dark=#EF5350}"
+                        StrokeThickness="1"
+                        Padding="15"
+                        IsVisible="{Binding HasError}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Label Text="{Binding ErrorMessage}"
+                           TextColor="{AppThemeBinding Light=#D32F2F, Dark=#EF5350}" />
+                </Border>
+
+                <Border Padding="15"
+                        Stroke="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
+                        StrokeThickness="1">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="My Profile" FontSize="22" FontAttributes="Bold" />
+                        <Label Text="{Binding FullNameText}" FontSize="18" FontAttributes="Bold" />
+                        <Label Text="{Binding EmailText}" FontSize="14" />
+                        <Label Text="{Binding MemberSinceText, StringFormat='Member Since: {0}'}" FontSize="14" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Padding="15"
+                        Stroke="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
+                        StrokeThickness="1">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="15" RowSpacing="15">
+                        <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="4">
+                            <Label Text="Average Rating" FontAttributes="Bold" />
+                            <Label Text="{Binding AverageRatingText}" FontSize="18" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="4">
+                            <Label Text="Items Listed" FontAttributes="Bold" />
+                            <Label Text="{Binding ItemsListedText}" FontSize="18" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="4">
+                            <Label Text="Rentals Completed" FontAttributes="Bold" />
+                            <Label Text="{Binding RentalsCompletedText}" FontSize="18" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <Button Text="{Binding PasswordToggleText}"
+                        Command="{Binding TogglePasswordChangeModeCommand}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+                        TextColor="White"
+                        HeightRequest="50"
+                        CornerRadius="8" />
+
+                <Border Padding="15"
+                        Stroke="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
+                        StrokeThickness="1"
+                        IsVisible="{Binding IsChangingPassword}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Change Password" FontSize="18" FontAttributes="Bold" />
+                        <Entry Placeholder="Current password" IsPassword="True" Text="{Binding CurrentPassword}" />
+                        <Entry Placeholder="New password" IsPassword="True" Text="{Binding NewPassword}" />
+                        <Entry Placeholder="Confirm new password" IsPassword="True" Text="{Binding ConfirmNewPassword}" />
+                        <Button Text="Save Password"
+                                Command="{Binding ChangePasswordCommand}"
+                                BackgroundColor="#2E7D32"
+                                TextColor="White"
+                                HeightRequest="50"
+                                CornerRadius="8" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Button Text="Back"
+                        Command="{Binding NavigateBackCommand}"
+                        BackgroundColor="Transparent"
+                        BorderColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
+                        BorderWidth="1"
+                        HeightRequest="50"
+                        CornerRadius="8" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
+    </Grid>
+</ContentPage>

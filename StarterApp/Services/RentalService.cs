@@ -1,5 +1,6 @@
 using StarterApp.Database.Data.Repositories;
 using StarterApp.Database.Models;
+using System.Linq;
 
 namespace StarterApp.Services;
 
@@ -165,10 +166,16 @@ public class RentalService : IRentalService
                 throw new InvalidOperationException(
                     $"Cannot transition from {rental.Status} to {newStatus}.");
             }
-
+            
             ValidateTransitionPermissions(rental, newStatus, currentUser.Id);
 
+            if (newStatus is "Approved" or "Out for Rent")
+            {
+               await ValidateNoOverlappingActiveRentalAsync(rental);
+            }
+
             return await _rentalRepository.UpdateRentalStatusAsync(rentalId, newStatus);
+            
         }
         catch (Exception ex)
         {
@@ -229,4 +236,28 @@ public class RentalService : IRentalService
             ("Returned", "Completed") => true,
             _ => false
         };
-}
+
+    private async Task ValidateNoOverlappingActiveRentalAsync(Rental targetRental)
+       {
+            var incomingRentals = await _rentalRepository.GetIncomingRentalsAsync();
+
+            var hasConflict = incomingRentals.Any(r =>
+            r.Id != targetRental.Id &&
+            r.ItemId == targetRental.ItemId &&
+            IsBlockingStatus(r.Status) &&
+            DatesOverlap(targetRental.StartDate, targetRental.EndDate, r.StartDate, r.EndDate));
+
+         if (hasConflict)
+         {
+        throw new InvalidOperationException(
+            "This item already has another active rental for overlapping dates.");
+        }
+        }
+
+    private static bool IsBlockingStatus(string status) =>
+    status is "Approved" or "Out for Rent" or "Overdue";
+
+    private static bool DatesOverlap(DateTime start1, DateTime end1, DateTime start2, DateTime end2) =>
+    start1.Date <= end2.Date && start2.Date <= end1.Date;
+
+    }

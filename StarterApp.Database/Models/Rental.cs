@@ -60,4 +60,16 @@ public class Rental
     public DateTime? RequestedAt { get; set; }
 
     public DateTime? ApprovedAt { get; set; }
+
+    [NotMapped]
+    public List<RentalStatusHistory> StatusHistory { get; set; } = new List<RentalStatusHistory>();
+}
+
+public class RentalStatusHistory
+{
+    [Required]
+    [MaxLength(50)]
+    public string Status { get; set; } = string.Empty;
+
+    public DateTime Timestamp { get; set; }
 }
