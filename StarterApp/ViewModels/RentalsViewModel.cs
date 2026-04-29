@@ -31,6 +31,18 @@ public partial class RentalsViewModel : BaseViewModel
     [ObservableProperty]
     private bool isRefreshing;
 
+    /// <summary>
+    /// Whether the incoming rentals section is currently shown
+    /// </summary>
+    [ObservableProperty]
+    private bool showIncomingRentals = true;
+
+    /// <summary>
+    /// Whether the outgoing rentals section is currently shown
+    /// </summary>
+    [ObservableProperty]
+    private bool showOutgoingRentals;
+
     public RentalsViewModel(IRentalService rentalService)
     {
         _rentalService = rentalService;
@@ -114,6 +126,20 @@ public partial class RentalsViewModel : BaseViewModel
     }
 
     [RelayCommand]
+    private void ShowIncoming()
+    {
+        ShowIncomingRentals = true;
+        ShowOutgoingRentals = false;
+    }
+
+    [RelayCommand]
+    private void ShowOutgoing()
+    {
+        ShowIncomingRentals = false;
+        ShowOutgoingRentals = true;
+    }
+
+    [RelayCommand]
     private async Task ApproveRentalAsync(Rental rental)
     {
         await ExecuteWorkflowActionAsync(
@@ -156,6 +182,42 @@ public partial class RentalsViewModel : BaseViewModel
             rental,
             () => _rentalService.CompleteRentalAsync(rental.Id),
             "Failed to complete rental.");
+    }
+
+    [RelayCommand]
+    private async Task LeaveReviewAsync(Rental rental)
+    {
+        if (rental == null)
+        {
+            return;
+        }
+
+        if (rental.Id <= 0 || rental.ItemId <= 0)
+        {
+            SetError("A valid completed rental is required.");
+            return;
+        }
+
+        if (!string.Equals(rental.Status, "Completed", StringComparison.OrdinalIgnoreCase))
+        {
+            SetError("Reviews can only be left for completed rentals.");
+            return;
+        }
+
+        try
+        {
+            ClearError();
+
+            await Shell.Current.GoToAsync("reviews", new Dictionary<string, object>
+            {
+                ["itemId"] = rental.ItemId,
+                ["rentalId"] = rental.Id
+            });
+        }
+        catch (Exception ex)
+        {
+            SetError($"Open review form failed: {ex.Message}");
+        }
     }
 
     private async Task ExecuteWorkflowActionAsync(

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="StarterApp.Views.ReviewsPage"
+             x:Name="ReviewsPageRoot"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:StarterApp.Database.Models;assembly=StarterApp.Database"
+             Title="{Binding Title}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Refresh"
+                     Command="{Binding RefreshCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="*" Padding="0">
+
+        <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}">
+
+            <ScrollView>
+                <VerticalStackLayout Padding="15" Spacing="20">
+
+                    <Border BackgroundColor="{AppThemeBinding Light=#FFEBEE, Dark=#1B0000}"
+                            Stroke="{AppThemeBinding Light=#F44336, Dark=#EF5350}"
+                            StrokeThickness="1"
+                            Padding="15"
+                            IsVisible="{Binding HasError}">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Label Text="{Binding ErrorMessage}"
+                               TextColor="{AppThemeBinding Light=#D32F2F, Dark=#EF5350}"
+                               FontSize="14" />
+                    </Border>
+
+                    <Border Padding="15"
+                            Stroke="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
+                            StrokeThickness="1"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Item Reviews"
+                                   FontSize="20"
+                                   FontAttributes="Bold" />
+
+                            <Label Text="{Binding AverageRating, StringFormat='Average Rating: {0:F1}/5'}"
+                                   FontSize="16" />
+
+                            <Label Text="{Binding TotalReviews, StringFormat='Total Reviews: {0}'}"
+                                   FontSize="14"
+                                   TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray400}}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border Padding="15"
+                            Stroke="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
+                            StrokeThickness="1"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}"
+                            IsVisible="{Binding CanSubmitReview}">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+
+                        <VerticalStackLayout Spacing="12">
+                            <Label Text="Leave a Review"
+                                   FontSize="18"
+                                   FontAttributes="Bold" />
+
+                            <Picker Title="Select rating"
+                                    ItemsSource="{Binding RatingOptions}"
+                                    SelectedItem="{Binding SelectedRating}" />
+
+                            <Editor Text="{Binding Comment}"
+                                    Placeholder="Write a comment (optional)"
+                                    AutoSize="TextChanges"
+                                    MaxLength="500"
+                                    HeightRequest="120" />
+
+                            <Button Text="Submit Review"
+                                    Command="{Binding SubmitReviewCommand}"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+                                    TextColor="White"
+                                    HeightRequest="50"
+                                    CornerRadius="8" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Label Text="All Reviews"
+                           FontSize="20"
+                           FontAttributes="Bold" />
+
+                    <CollectionView ItemsSource="{Binding Reviews}"
+                                    SelectionMode="None">
+
+                        <CollectionView.EmptyView>
+                            <StackLayout Padding="10">
+                                <Label Text="No reviews yet"
+                                       FontSize="16"
+                                       FontAttributes="Bold" />
+                                <Label Text="Reviews for this item will appear here."
+                                       TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray400}}" />
+                            </StackLayout>
+                        </CollectionView.EmptyView>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Review">
+                                <Border Margin="0,5"
+                                        Padding="15"
+                                        Stroke="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
+                                        StrokeThickness="1"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+
+                                    <VerticalStackLayout Spacing="6">
+                                        <Label Text="{Binding ReviewerName}"
+                                               FontSize="16"
+                                               FontAttributes="Bold" />
+
+                                        <Label Text="{Binding Rating, StringFormat='Rating: {0}/5'}"
+                                               FontSize="14" />
+
+                                        <Label Text="{Binding Comment}"
+                                               FontSize="14"
+                                               LineBreakMode="WordWrap" />
+
+                                        <Label Text="{Binding CreatedAt, StringFormat='Posted: {0:dd/MM/yyyy HH:mm}'}"
+                                               FontSize="12"
+                                               TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray400}}" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+            </ScrollView>
+
+        </RefreshView>
+
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
+
+    </Grid>
+</ContentPage>

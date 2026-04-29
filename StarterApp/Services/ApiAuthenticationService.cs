@@ -65,11 +65,14 @@ public class ApiAuthenticationService : IAuthenticationService
 
             _currentUser = new User
             {
-                Id = profile!.Id,
+                Id = profile.Id,
                 Email = profile.Email,
                 FirstName = profile.FirstName,
                 LastName = profile.LastName,
                 CreatedAt = profile.CreatedAt,
+                AverageRating = profile.AverageRating,
+                ItemsListed = profile.ItemsListed,
+                RentalsCompleted = profile.RentalsCompleted,
                 IsActive = true
             };
 
@@ -211,7 +214,14 @@ public class ApiAuthenticationService : IAuthenticationService
     private record TokenResponse(string Token, DateTime ExpiresAt, int UserId);
 
     private record UserProfileResponse(
-        int Id, string Email, string FirstName, string LastName, DateTime CreatedAt);
+         int Id, 
+         string Email,
+        string FirstName,
+        string LastName,
+        DateTime CreatedAt,
+        double? AverageRating,
+        int ItemsListed,
+        int RentalsCompleted);
 
     private record ApiErrorResponse(string Error, string Message);
 }

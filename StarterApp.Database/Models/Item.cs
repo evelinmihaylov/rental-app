@@ -40,12 +40,27 @@ public class Item
     [MaxLength(100)]
     public string? OwnerName { get; set; }
 
+
+    [NotMapped]
+    public double? OwnerRating { get; set; }
     // Location
     public double Latitude { get; set; }
     public double Longitude { get; set; }
 
+    [NotMapped]
+    public double? Distance { get; set; }
+
     // Availability
     public bool IsAvailable { get; set; }
+
+    [NotMapped]
+    public double? AverageRating { get; set; }
+
+    [NotMapped]
+    public int TotalReviews { get; set; }
+
+    [NotMapped]
+    public List<Review> Reviews { get; set; } = new List<Review>();
 
     // Optional image
     public string? ImageUrl { get; set; }

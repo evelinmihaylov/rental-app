@@ -141,8 +141,17 @@ public partial class NearbyItemsViewModel : BaseViewModel
         {
             return;
         }
-
-        await Shell.Current.GoToAsync($"itemdetail?id={item.Id}");
+         try
+        {
+              await Shell.Current.GoToAsync("itemdetail", new Dictionary<string, object>
+              {
+            ["id"] = item.Id
+               });
+        }
+         catch (Exception ex)
+         {
+        SetError($"Open item failed: {ex.Message}");
+         }
     }
 
     partial void OnSelectedCategoryChanged(Category? value)

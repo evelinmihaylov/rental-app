@@ -69,6 +69,21 @@
                        Margin="10" />
             </Border>
 
+               <!-- Reviews -->
+            <Label Text="Reviews" FontAttributes="Bold" />
+            <Border Stroke="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
+                    StrokeThickness="1"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Margin="10" Spacing="4">
+                    <Label Text="{Binding AverageRatingText}" />
+                    <Label Text="{Binding TotalReviewsText}"
+                           TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray400}}" />
+                </VerticalStackLayout>
+            </Border>
+
             <!-- Location -->
             <Label Text="Latitude" FontAttributes="Bold" />
             <Border Stroke="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
@@ -105,34 +120,52 @@
             </Border>
 
             <!-- Action Buttons -->
-            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10" Margin="0,20,0,0">
+           <Grid RowDefinitions="Auto,Auto"
+                  ColumnDefinitions="*,*,*"
+                  ColumnSpacing="10"
+                  RowSpacing="10"
+                  Margin="0,20,0,0">
 
-                <Button Grid.Column="0"
-                        Text="Back"
-                        Command="{Binding BackCommand}"
-                        BackgroundColor="Transparent"
-                        TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray400}}"
-                        BorderColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
-                        BorderWidth="1"
-                        HeightRequest="50"
-                        CornerRadius="8" />
+           <Button Grid.Row="0"
+                   Grid.Column="0"
+                  Text="Back"
+                  Command="{Binding BackCommand}"
+                  BackgroundColor="Transparent"
+                  TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray400}}"
+                  BorderColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
+                  BorderWidth="1"
+                  HeightRequest="50"
+                  CornerRadius="8" />
+ 
+            <Button Grid.Row="0"
+               Grid.Column="1"
+               Text="Edit"
+               Command="{Binding EditCommand}"
+               IsVisible="{Binding CanEdit}"
+               BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+               TextColor="White"
+               HeightRequest="50"
+               CornerRadius="8" />
 
-                <Button Grid.Column="1"
-                        Text="Edit"
-                        Command="{Binding EditCommand}"
-                        IsVisible="{Binding CanEdit}"
-                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
-                        TextColor="White"
-                        HeightRequest="50"
-                        CornerRadius="8" />
+            <Button Grid.Row="0"
+               Grid.Column="2"
+               Text="Rent"
+               Command="{Binding RequestRentalCommand}"
+               BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+               TextColor="White"
+               HeightRequest="50"
+               CornerRadius="8" />
 
-                 <Button Grid.Column="2"
-                        Text="Rent"
-                        Command="{Binding RequestRentalCommand}"
-                         BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
-                        TextColor="White"
-                        HeightRequest="50"
-                        CornerRadius="8" />
+            <Button Grid.Row="1"
+               Grid.ColumnSpan="3"
+               Text="View Reviews"
+               Command="{Binding ViewReviewsCommand}"
+               BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray800}}"
+               TextColor="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray100}}"
+               BorderColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
+               BorderWidth="1"
+               HeightRequest="50"
+              CornerRadius="8" />
             </Grid>
 
             <!-- Loading Indicator -->

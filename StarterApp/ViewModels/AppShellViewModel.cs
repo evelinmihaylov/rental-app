@@ -85,7 +85,7 @@ namespace StarterApp.ViewModels
         [RelayCommand]
         private async Task NavigateToProfileAsync()
         {
-            await _navigationService.NavigateToAsync("TempPage");
+            await _navigationService.NavigateToAsync("profile");
         }
 
         /// @brief Navigates to the current user's settings page
@@ -93,7 +93,7 @@ namespace StarterApp.ViewModels
         [RelayCommand]
         private async Task NavigateToSettingsAsync()
         {
-            await _navigationService.NavigateToAsync("TempPage");
+            await _navigationService.NavigateToAsync("profile");
         }
 
         /// @brief Logs out the current user and navigates to login page

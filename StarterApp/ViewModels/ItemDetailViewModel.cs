@@ -56,6 +56,18 @@ public partial class ItemDetailViewModel : BaseViewModel
     private string availabilityText = string.Empty;
 
     /// <summary>
+    /// Average rating text for display
+    /// </summary>
+    [ObservableProperty]
+    private string averageRatingText = "No rating yet";
+
+    /// <summary>
+    /// Total reviews text for display
+    /// </summary>
+    [ObservableProperty]
+    private string totalReviewsText = "0 reviews";
+
+    /// <summary>
     /// Whether current user can edit this item
     /// </summary>
     [ObservableProperty]
@@ -100,6 +112,13 @@ public partial class ItemDetailViewModel : BaseViewModel
             latitude = item.Latitude;
             longitude = item.Longitude;
             availabilityText = item.IsAvailable ? "Available" : "Not available";
+            averageRatingText = item.AverageRating.HasValue
+                ? $"{item.AverageRating.Value:F1} / 5"
+                : "No rating yet";
+
+            totalReviewsText = item.TotalReviews == 1
+                ? "1 review"
+                : $"{item.TotalReviews} reviews";
 
             OnPropertyChanged(nameof(TitleText));
             OnPropertyChanged(nameof(Description));
@@ -108,6 +127,8 @@ public partial class ItemDetailViewModel : BaseViewModel
             OnPropertyChanged(nameof(Latitude));
             OnPropertyChanged(nameof(Longitude));
             OnPropertyChanged(nameof(AvailabilityText));
+            OnPropertyChanged(nameof(AverageRatingText));
+            OnPropertyChanged(nameof(TotalReviewsText));
 
             // Check if current logged-in user owns the item
             var currentUserIdText = await SecureStorage.GetAsync("user_id");
@@ -169,4 +190,31 @@ public partial class ItemDetailViewModel : BaseViewModel
 
         await Shell.Current.GoToAsync($"createrental?itemId={_itemId.Value}");
     }
+
+     /// <summary>
+     /// Navigate to the reviews page for this item
+     /// </summary>
+    [RelayCommand]
+    private async Task ViewReviewsAsync()
+    {
+    if (!_itemId.HasValue)
+    {
+        SetError("Item ID is required.");
+        return;
+    }
+
+    try
+    {
+        ClearError();
+
+        await Shell.Current.GoToAsync("reviews", new Dictionary<string, object>
+        {
+            ["itemId"] = _itemId.Value
+        });
+    }
+    catch (Exception ex)
+    {
+        SetError($"Open reviews failed: {ex.Message}");
+    }
+}
 }

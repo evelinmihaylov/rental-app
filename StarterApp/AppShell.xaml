@@ -5,23 +5,21 @@
        xmlns:views="clr-namespace:StarterApp.Views"
        Shell.FlyoutBehavior="Flyout">
 
-    <FlyoutItem Title="Items">
-        <ShellContent Title="All Items"
-                      ContentTemplate="{DataTemplate views:ItemsListPage}"
-                      Route="items" />
-
-        <ShellContent Title="Find Near Me"
-                      ContentTemplate="{DataTemplate views:NearbyItemsPage}"
-                      Route="nearbyitems" />
+    <FlyoutItem Title="All Items" Route="items">   
+         <ShellContent ContentTemplate="{DataTemplate views:ItemsListPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Rentals">
-        <ShellContent Title="My Rentals"
-                      ContentTemplate="{DataTemplate views:RentalsPage}"
-                      Route="rentals" />
+    <FlyoutItem Title="Find Near Me" Route="nearbyitems">
+        <ShellContent ContentTemplate="{DataTemplate views:NearbyItemsPage}" />
     </FlyoutItem>
 
-     <MenuItem Text="Logout"
+    <FlyoutItem Title="Rentals" Route="rentals">
+        <ShellContent ContentTemplate="{DataTemplate views:RentalsPage}" />
+    </FlyoutItem>
+    
+    <MenuItem Text="Profile"
+              Command="{Binding NavigateToProfileCommand}" />
+
+    <MenuItem Text="Logout"
               Command="{Binding LogoutCommand}" />
-
 </Shell>

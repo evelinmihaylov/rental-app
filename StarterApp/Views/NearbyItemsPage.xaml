@@ -118,7 +118,7 @@
 
                             <VerticalStackLayout Spacing="5">
 
-                                <Label Text="{Binding Category}"
+                              <Label Text="{Binding Category}"
                                        FontSize="12"
                                        TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" />
 
@@ -136,6 +136,13 @@
                                 <Label Text="{Binding DailyRate, StringFormat='GBP {0}/day'}"
                                        FontSize="14"
                                        FontAttributes="Bold" />
+
+                                <Label Text="{Binding Distance, StringFormat='Distance: {0:0.0} km away', TargetNullValue='Distance unavailable'}"
+                                       FontSize="13"
+                                       TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray400}}" />
+
+             
+
 
                             </VerticalStackLayout>
 
