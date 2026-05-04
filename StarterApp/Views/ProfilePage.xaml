@@ -53,6 +53,10 @@
                             <Label Text="Rentals Completed" FontAttributes="Bold" />
                             <Label Text="{Binding RentalsCompletedText}" FontSize="18" />
                         </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="4">
+                            <Label Text="Reviews Received" FontAttributes="Bold" />
+                            <Label Text="{Binding TotalReviewsText}" FontSize="18" />
+                        </VerticalStackLayout>
                     </Grid>
                 </Border>
 

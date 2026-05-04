@@ -15,6 +15,7 @@ public partial class NearbyItemsViewModel : BaseViewModel
 {
     private readonly IItemRepository _itemRepository;
     private readonly ILocationService _locationService;
+    private readonly INavigationService _navigationService;
 
     [ObservableProperty]
     private ObservableCollection<Item> nearbyItems = new();
@@ -39,10 +40,12 @@ public partial class NearbyItemsViewModel : BaseViewModel
 
     public NearbyItemsViewModel(
         IItemRepository itemRepository,
-        ILocationService locationService)
+        ILocationService locationService,
+        INavigationService navigationService)
     {
         _itemRepository = itemRepository;
         _locationService = locationService;
+        _navigationService = navigationService;
         Title = "Find Near Me";
     }
 
@@ -141,17 +144,18 @@ public partial class NearbyItemsViewModel : BaseViewModel
         {
             return;
         }
-         try
+
+        try
         {
-              await Shell.Current.GoToAsync("itemdetail", new Dictionary<string, object>
-              {
-            ["id"] = item.Id
-               });
+            await _navigationService.NavigateToAsync("itemdetail", new Dictionary<string, object>
+            {
+                ["id"] = item.Id
+            });
         }
-         catch (Exception ex)
-         {
-        SetError($"Open item failed: {ex.Message}");
-         }
+        catch (Exception ex)
+        {
+            SetError($"Open item failed: {ex.Message}");
+        }
     }
 
     partial void OnSelectedCategoryChanged(Category? value)

@@ -1,4 +1,3 @@
-using Microsoft.Maui.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using StarterApp.Services;
@@ -8,21 +7,16 @@ namespace StarterApp.ViewModels;
 /// <summary>
 /// ViewModel for creating a new rental request
 /// </summary>
-[QueryProperty(nameof(ItemId), "itemId")]
 public partial class CreateRentalViewModel : BaseViewModel
 {
     private readonly IRentalService _rentalService;
+    private readonly INavigationService _navigationService;
 
     /// <summary>
     /// The item ID being rented
     /// </summary>
     [ObservableProperty]
     private int itemId;
-
-    partial void OnItemIdChanged(int value)
-    {
-    _ = InitializeAsync(value);
-    }
 
     /// <summary>
     /// Rental start date
@@ -36,9 +30,12 @@ public partial class CreateRentalViewModel : BaseViewModel
     [ObservableProperty]
     private DateTime endDate = DateTime.Today.AddDays(1);
 
-    public CreateRentalViewModel(IRentalService rentalService)
+    public CreateRentalViewModel(
+        IRentalService rentalService,
+        INavigationService navigationService)
     {
         _rentalService = rentalService;
+        _navigationService = navigationService;
         Title = "Request Rental";
     }
 
@@ -64,24 +61,6 @@ public partial class CreateRentalViewModel : BaseViewModel
     [RelayCommand]
     private async Task SaveAsync()
     {
-        if (ItemId <= 0)
-        {
-            SetError("Invalid item selected");
-            return;
-        }
-
-        if (StartDate.Date < DateTime.Today)
-        {
-            SetError("Start date must be today or later");
-            return;
-        }
-
-        if (EndDate.Date <= StartDate.Date)
-        {
-            SetError("End date must be after start date");
-            return;
-        }
-
         try
         {
             IsBusy = true;
@@ -91,7 +70,7 @@ public partial class CreateRentalViewModel : BaseViewModel
 
             if (createdRental != null)
             {
-                await Shell.Current.GoToAsync("..");
+                await _navigationService.NavigateBackAsync();
             }
             else
             {
@@ -100,7 +79,9 @@ public partial class CreateRentalViewModel : BaseViewModel
         }
         catch (Exception ex)
         {
-            SetError($"Failed to save rental request: {ex.Message}");
+            SetError(string.IsNullOrWhiteSpace(ex.Message)
+            ? "Failed to save rental request."
+            : ex.Message);
         }
         finally
         {
@@ -114,6 +95,6 @@ public partial class CreateRentalViewModel : BaseViewModel
     [RelayCommand]
     private async Task CancelAsync()
     {
-        await Shell.Current.GoToAsync("..");
+        await _navigationService.NavigateBackAsync();
     }
 }

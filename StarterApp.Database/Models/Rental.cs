@@ -63,6 +63,9 @@ public class Rental
 
     [NotMapped]
     public List<RentalStatusHistory> StatusHistory { get; set; } = new List<RentalStatusHistory>();
+
+    [NotMapped]
+    public bool CanLeaveReview { get; set; }
 }
 
 public class RentalStatusHistory
