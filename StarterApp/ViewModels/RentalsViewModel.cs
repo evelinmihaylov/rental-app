@@ -12,6 +12,9 @@ namespace StarterApp.ViewModels;
 public partial class RentalsViewModel : BaseViewModel
 {
     private readonly IRentalService _rentalService;
+    private readonly IReviewService _reviewService;
+    private readonly INavigationService _navigationService;
+    private readonly IAuthenticationService _authenticationService;
 
     /// <summary>
     /// Rental requests received for the current user's items
@@ -43,9 +46,16 @@ public partial class RentalsViewModel : BaseViewModel
     [ObservableProperty]
     private bool showOutgoingRentals;
 
-    public RentalsViewModel(IRentalService rentalService)
+    public RentalsViewModel(
+        IRentalService rentalService,
+        IReviewService reviewService,
+        INavigationService navigationService,
+        IAuthenticationService authenticationService)
     {
         _rentalService = rentalService;
+        _reviewService = reviewService;
+        _navigationService = navigationService;
+        _authenticationService = authenticationService;
         Title = "Rentals";
     }
 
@@ -67,10 +77,10 @@ public partial class RentalsViewModel : BaseViewModel
         {
             IsBusy = true;
             ClearError();
+            IncomingRentals.Clear();
 
             var rentals = await _rentalService.GetIncomingRentalsAsync();
 
-            IncomingRentals.Clear();
             foreach (var rental in rentals)
             {
                 IncomingRentals.Add(rental);
@@ -95,10 +105,11 @@ public partial class RentalsViewModel : BaseViewModel
         {
             IsBusy = true;
             ClearError();
+            OutgoingRentals.Clear();
 
             var rentals = await _rentalService.GetOutgoingRentalsAsync();
+            await PopulateReviewActionsAsync(rentals);
 
-            OutgoingRentals.Clear();
             foreach (var rental in rentals)
             {
                 OutgoingRentals.Add(rental);
@@ -204,11 +215,17 @@ public partial class RentalsViewModel : BaseViewModel
             return;
         }
 
+        if (!rental.CanLeaveReview)
+        {
+            SetError("You have already submitted a review for this rental.");
+            return;
+        }
+
         try
         {
             ClearError();
 
-            await Shell.Current.GoToAsync("reviews", new Dictionary<string, object>
+            await _navigationService.NavigateToAsync("reviews", new Dictionary<string, object>
             {
                 ["itemId"] = rental.ItemId,
                 ["rentalId"] = rental.Id
@@ -217,6 +234,30 @@ public partial class RentalsViewModel : BaseViewModel
         catch (Exception ex)
         {
             SetError($"Open review form failed: {ex.Message}");
+        }
+    }
+
+    [RelayCommand]
+    private async Task ViewReviewsAsync(Rental rental)
+    {
+        if (rental == null || rental.ItemId <= 0)
+        {
+            SetError("A valid item is required to view reviews.");
+            return;
+        }
+
+        try
+        {
+            ClearError();
+
+            await _navigationService.NavigateToAsync("reviews", new Dictionary<string, object>
+            {
+                ["itemId"] = rental.ItemId
+            });
+        }
+        catch (Exception ex)
+        {
+            SetError($"Open reviews failed: {ex.Message}");
         }
     }
 
@@ -254,6 +295,62 @@ public partial class RentalsViewModel : BaseViewModel
         finally
         {
             IsBusy = false;
+        }
+    }
+
+    private async Task PopulateReviewActionsAsync(IEnumerable<Rental> rentals)
+    {
+        foreach (var rental in rentals)
+        {
+            rental.CanLeaveReview = await CanLeaveReviewAsync(rental);
+        }
+    }
+
+    private async Task<bool> CanLeaveReviewAsync(Rental rental)
+    {
+        var currentUserId = _authenticationService.CurrentUser?.Id ?? 0;
+
+        if (rental.Id <= 0 ||
+            rental.ItemId <= 0 ||
+            currentUserId <= 0 ||
+            !string.Equals(rental.Status, "Completed", StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        try
+        {
+            return !await HasReviewForRentalAsync(rental.ItemId, rental.Id, currentUserId);
+        }
+        catch
+        {
+            // If review lookup fails, keep the original Completed-based behavior.
+            return true;
+        }
+    }
+
+    private async Task<bool> HasReviewForRentalAsync(int itemId, int rentalId, int reviewerId)
+    {
+        const int pageSize = 50;
+        var page = 1;
+
+        while (true)
+        {
+            var result = await _reviewService.GetItemReviewsAsync(itemId, page, pageSize);
+
+            if (result.Reviews.Any(review =>
+                    review.RentalId == rentalId &&
+                    review.ReviewerId == reviewerId))
+            {
+                return true;
+            }
+
+            if (page >= Math.Max(result.TotalPages, 1))
+            {
+                return false;
+            }
+
+            page++;
         }
     }
 }

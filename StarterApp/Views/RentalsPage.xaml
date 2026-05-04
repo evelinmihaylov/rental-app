@@ -216,6 +216,16 @@
                                                     </Button.Triggers>
                                                 </Button>
 
+                                                <Button Text="View Reviews"
+                                                        Margin="0,0,10,10"
+                                                        Padding="14,8"
+                                                        BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray800}}"
+                                                        TextColor="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray100}}"
+                                                        BorderColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
+                                                        BorderWidth="1"
+                                                        Command="{Binding Source={x:Reference RentalsPageRoot}, Path=BindingContext.ViewReviewsCommand}"
+                                                        CommandParameter="{Binding .}" />
+
                                             </FlexLayout>
                                         </VerticalStackLayout>
                                     </Border>
@@ -311,15 +321,17 @@
                                                         TextColor="White"
                                                         Command="{Binding Source={x:Reference RentalsPageRoot}, Path=BindingContext.LeaveReviewCommand}"
                                                         CommandParameter="{Binding .}"
-                                                        IsVisible="False">
-                                                    <Button.Triggers>
-                                                        <DataTrigger TargetType="Button"
-                                                                     Binding="{Binding Status}"
-                                                                     Value="Completed">
-                                                            <Setter Property="IsVisible" Value="True" />
-                                                        </DataTrigger>
-                                                    </Button.Triggers>
-                                                </Button>
+                                                        IsVisible="{Binding CanLeaveReview}" />
+
+                                                <Button Text="View Reviews"
+                                                        Margin="0,0,10,10"
+                                                        Padding="14,8"
+                                                        BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray800}}"
+                                                        TextColor="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray100}}"
+                                                        BorderColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
+                                                        BorderWidth="1"
+                                                        Command="{Binding Source={x:Reference RentalsPageRoot}, Path=BindingContext.ViewReviewsCommand}"
+                                                        CommandParameter="{Binding .}" />
 
                                             </FlexLayout>
                                         </VerticalStackLayout>

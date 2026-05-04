@@ -12,6 +12,7 @@ namespace StarterApp.ViewModels;
 public partial class ReviewsViewModel : BaseViewModel
 {
     private readonly IReviewService _reviewService;
+    private readonly IAuthenticationService _authenticationService;
 
     [ObservableProperty]
     private ObservableCollection<Review> reviews = new();
@@ -42,9 +43,12 @@ public partial class ReviewsViewModel : BaseViewModel
 
     public ObservableCollection<int> RatingOptions { get; } = new() { 1, 2, 3, 4, 5 };
 
-    public ReviewsViewModel(IReviewService reviewService)
+    public ReviewsViewModel(
+        IReviewService reviewService,
+        IAuthenticationService authenticationService)
     {
         _reviewService = reviewService;
+        _authenticationService = authenticationService;
         Title = "Reviews";
     }
 
@@ -52,7 +56,7 @@ public partial class ReviewsViewModel : BaseViewModel
     {
         ItemId = itemId;
         RentalId = rentalId;
-        CanSubmitReview = rentalId.HasValue;
+        CanSubmitReview = false;
 
         await LoadReviewsAsync();
     }
@@ -137,10 +141,18 @@ public partial class ReviewsViewModel : BaseViewModel
             
             AverageRating = result.AverageRating ?? 0;
             TotalReviews = result.TotalReviews;
+
+            var currentUserId = _authenticationService.CurrentUser?.Id ?? 0;
+            CanSubmitReview = RentalId.HasValue &&
+                              currentUserId > 0 &&
+                              Reviews.All(review =>
+                                  review.RentalId != RentalId.Value ||
+                                  review.ReviewerId != currentUserId);
         }
         catch (Exception ex)
         {
             SetError($"Failed to load reviews: {ex.Message}");
+            CanSubmitReview = false;
         }
         finally
         {

@@ -4,7 +4,7 @@ namespace StarterApp.Services;
 
 public class LocationService : ILocationService
 {
-    public async Task<Location?> GetCurrentLocationAsync()
+    public async Task<AppLocation?> GetCurrentLocationAsync()
     {
         try
         {
@@ -12,7 +12,11 @@ public class LocationService : ILocationService
                 GeolocationAccuracy.Medium,
                 TimeSpan.FromSeconds(10));
 
-            return await Geolocation.Default.GetLocationAsync(request);
+            var location = await Geolocation.Default.GetLocationAsync(request);
+
+            return location is null
+                ? null
+                : new AppLocation(location.Latitude, location.Longitude);
         }
         catch
         {

@@ -5,6 +5,7 @@
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using StarterApp.Database.Data.Repositories;
 using StarterApp.Database.Models;
 using StarterApp.Services;
 
@@ -20,6 +21,9 @@ public partial class ProfileViewModel : BaseViewModel
     
     /// @brief Navigation service for managing page navigation
     private readonly INavigationService _navigationService;
+    private readonly IItemRepository _itemRepository;
+    private readonly IRentalService _rentalService;
+    private readonly IReviewService _reviewService;
 
     /// @brief The current user's profile information
     /// @details Observable property containing the current user's data
@@ -46,6 +50,18 @@ public partial class ProfileViewModel : BaseViewModel
     [ObservableProperty]
     private bool isChangingPassword;
 
+    [ObservableProperty]
+    private double? averageRating;
+
+    [ObservableProperty]
+    private int itemsListed;
+
+    [ObservableProperty]
+    private int rentalsCompleted;
+
+    [ObservableProperty]
+    private int totalReviews;
+
     /// @brief Initializes a new instance of the ProfileViewModel class
     /// @param authService The authentication service instance
     /// @param navigationService The navigation service instance
@@ -53,32 +69,91 @@ public partial class ProfileViewModel : BaseViewModel
     
     public string FullNameText => CurrentUser?.FullName ?? "Unknown user";
     public string EmailText => CurrentUser?.Email ?? "Unknown email";
-    public string AverageRatingText => CurrentUser?.AverageRating is double rating ? $"{rating:F1} / 5" : "No rating yet";
-    public string ItemsListedText => CurrentUser?.ItemsListed.ToString() ?? "0";
-    public string RentalsCompletedText => CurrentUser?.RentalsCompleted.ToString() ?? "0";
+    public string AverageRatingText => AverageRating is double rating ? $"{rating:F1} / 5" : "No rating yet";
+    public string ItemsListedText => ItemsListed.ToString();
+    public string RentalsCompletedText => RentalsCompleted.ToString();
+    public string TotalReviewsText => TotalReviews.ToString();
     public string MemberSinceText => CurrentUser?.CreatedAt?.ToString("dd/MM/yyyy") ?? "Unknown";
     public string PasswordToggleText => "Password change not available yet";
-    public ProfileViewModel(IAuthenticationService authService, INavigationService navigationService)
+    public ProfileViewModel(
+        IAuthenticationService authService,
+        INavigationService navigationService,
+        IItemRepository itemRepository,
+        IRentalService rentalService,
+        IReviewService reviewService)
     {
         _authService = authService;
         _navigationService = navigationService;
+        _itemRepository = itemRepository;
+        _rentalService = rentalService;
+        _reviewService = reviewService;
         Title = "Profile";
         CurrentUser = _authService.CurrentUser;
+        AverageRating = CurrentUser?.AverageRating;
+        ItemsListed = CurrentUser?.ItemsListed ?? 0;
+        RentalsCompleted = CurrentUser?.RentalsCompleted ?? 0;
     }
 
     partial void OnCurrentUserChanged(User? value)
     {
         OnPropertyChanged(nameof(FullNameText));
         OnPropertyChanged(nameof(EmailText));
-        OnPropertyChanged(nameof(AverageRatingText));
-        OnPropertyChanged(nameof(ItemsListedText));
-        OnPropertyChanged(nameof(RentalsCompletedText));
         OnPropertyChanged(nameof(MemberSinceText));
+
+        AverageRating = value?.AverageRating;
+        ItemsListed = value?.ItemsListed ?? 0;
+        RentalsCompleted = value?.RentalsCompleted ?? 0;
     }
 
     partial void OnIsChangingPasswordChanged(bool value)
     {
         OnPropertyChanged(nameof(PasswordToggleText));
+    }
+
+    partial void OnAverageRatingChanged(double? value) => OnPropertyChanged(nameof(AverageRatingText));
+    partial void OnItemsListedChanged(int value) => OnPropertyChanged(nameof(ItemsListedText));
+    partial void OnRentalsCompletedChanged(int value) => OnPropertyChanged(nameof(RentalsCompletedText));
+    partial void OnTotalReviewsChanged(int value) => OnPropertyChanged(nameof(TotalReviewsText));
+
+    public async Task InitializeAsync()
+    {
+        if (CurrentUser == null)
+        {
+            return;
+        }
+
+        try
+        {
+            IsBusy = true;
+            ClearError();
+
+            var currentUserId = CurrentUser.Id;
+            var itemsTask = _itemRepository.GetAllItemsAsync();
+            var outgoingRentalsTask = _rentalService.GetOutgoingRentalsAsync();
+            var userReviewsTask = _reviewService.GetUserReviewsAsync(currentUserId, 1, 50);
+
+            await Task.WhenAll(itemsTask, outgoingRentalsTask, userReviewsTask);
+
+            ItemsListed = itemsTask.Result.Count(item => item.OwnerId == currentUserId);
+            RentalsCompleted = outgoingRentalsTask.Result.Count(rental =>
+                string.Equals(rental.Status, "Completed", StringComparison.OrdinalIgnoreCase));
+
+            var reviewResult = userReviewsTask.Result;
+            AverageRating = reviewResult.AverageRating;
+            TotalReviews = reviewResult.TotalReviews;
+
+            CurrentUser.ItemsListed = ItemsListed;
+            CurrentUser.RentalsCompleted = RentalsCompleted;
+            CurrentUser.AverageRating = AverageRating;
+        }
+        catch (Exception ex)
+        {
+            SetError($"Failed to load profile stats: {ex.Message}");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 
     [RelayCommand]
